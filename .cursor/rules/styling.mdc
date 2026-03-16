@@ -1,0 +1,12 @@
+---
+description: Styling with NativeWind and React Native Reusables
+globs: "**/*.tsx"
+alwaysApply: false
+---
+
+# Styling
+
+- Use **NativeWind** (Tailwind) via the `className` prop on React Native components (e.g. `View`, `Text`, `Pressable`). Prefer utility classes over inline styles.
+- Use **React Native Reusables** (shadcn-style) from `@/components/ui/` when applicable: `Button`, `Input`, `Label`, `Card`, `Text`, `Avatar`, etc.
+- Avoid adding new `StyleSheet.create` for layout/colors; use `className` instead. Use StyleSheet only when needed (e.g. dynamic values, platform-specific numeric values).
+- Keep theme tokens in `src/global.css` or Reusables theme; reference via Tailwind classes (e.g. `bg-background`, `text-foreground`).

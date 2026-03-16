@@ -1,0 +1,13 @@
+---
+description: Firebase JS SDK usage and auth/lib patterns
+globs: "**/firebase/**,**/lib/auth*.ts,**/lib/firebase/**"
+alwaysApply: false
+---
+
+# Firebase
+
+- Use **Firebase JS SDK** only (Expo Go compatible). Do not use React Native Firebase (native modules) in this project.
+- **Config**: Read from `process.env.EXPO_PUBLIC_*`. Never commit secrets; use `.env` and `.env.example`.
+- **Auth**: Thin wrapper in `src/lib/auth.ts` (or `auth/`); expose AuthContext from `src/contexts/auth-context.tsx` with `user`, `loading`, `signIn`, `signUp`, `signOut`.
+- **Firestore**: Initialize in `src/lib/firebase/config.ts`. Use for user/dating profiles (e.g. `profiles/{uid}`). Define TypeScript types for document shapes.
+- **Storage**: Initialize in config; use for profile photos (`profiles/{uid}/photos/`). Use `ref`, `uploadBytes`, `getDownloadURL` and store URLs in Firestore.

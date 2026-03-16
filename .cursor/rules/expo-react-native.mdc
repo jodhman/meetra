@@ -1,0 +1,13 @@
+---
+description: Expo and React Native patterns
+globs: "**/*.{tsx,ts}"
+alwaysApply: false
+---
+
+# Expo & React Native
+
+- Prefer **Expo** APIs over raw React Native when available (e.g. `expo-image`, `expo-router`, `expo-image-picker`).
+- Use **expo-router** for all navigation; use `Stack`, `Tabs`, `Stack.Protected`, and file-based routes under `src/app/`.
+- Use **SafeAreaView** from `react-native-safe-area-context` for screens that need safe area insets.
+- Platform-specific code: use `Platform.select({ ios: ..., android: ..., default: ... })` or split files (e.g. `component.native.tsx`, `component.web.tsx`) when necessary.
+- Use `Pressable` or Reusables `Button` for touchable UI; avoid deprecated `Touchable*` for new code.

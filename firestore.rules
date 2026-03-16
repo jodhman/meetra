@@ -1,0 +1,14 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Dating profiles: one doc per user (profiles/{uid})
+    // - Authenticated users can read any profile (for discovery/browsing)
+    // - Only the owner can create, update, or delete their own profile
+    match /profiles/{userId} {
+      allow read: if request.auth != null;
+      allow create, update, delete: if request.auth != null && request.auth.uid == userId;
+    }
+  }
+}

@@ -1,0 +1,12 @@
+---
+description: TypeScript standards
+globs: "**/*.ts"
+alwaysApply: false
+---
+
+# TypeScript
+
+- Project uses **strict** mode. No disabling strict checks without justification.
+- Use **explicit types** for public APIs (function params, return types) and for Firebase document shapes (Firestore, auth user fields).
+- Avoid `any`. Use `unknown` and type guards, or generic constraints, when types are not known.
+- Prefer `interface` for object shapes that may be extended; use `type` for unions and computed types.

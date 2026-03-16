@@ -1,0 +1,24 @@
+import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { Tabs } from 'expo-router';
+import React from 'react';
+import { useColorScheme } from 'react-native';
+
+export default function AppLayout() {
+  const colorScheme = useColorScheme();
+  return (
+    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <Tabs
+        screenOptions={{
+          headerShown: true,
+          tabBarActiveTintColor: undefined,
+        }}>
+        <Tabs.Screen name="index" options={{ title: 'Dashboard', tabBarLabel: 'Dashboard' }} />
+        <Tabs.Screen name="explore" options={{ title: 'Explore', tabBarLabel: 'Explore' }} />
+        <Tabs.Screen
+          name="profile"
+          options={{ title: 'Profile', tabBarLabel: 'Profile', headerShown: false }}
+        />
+      </Tabs>
+    </ThemeProvider>
+  );
+}
