@@ -1,15 +1,23 @@
 # Singles Night – App overview
 
-Dating-style app built with Expo (React Native), TypeScript, Firebase (Auth, Firestore, Storage), and TanStack Query.
+Event-based dating platform: users **Meet → Interact → Then Match** at singles events rather than swiping. Full product concept is in [.cursor/rules/core-product-concept.mdc](../.cursor/rules/core-product-concept.mdc).
 
-## What it does
+**Stack:** Expo (React Native), TypeScript, Firebase (Auth, Firestore, Storage), TanStack Query.
+
+## What it does (current implementation)
 
 - **Auth**: Email/password sign up and sign in via Firebase Auth. Unauthenticated users see login/signup; authenticated users see a tabbed app (Dashboard, Explore, Profile).
 - **Profile**: Users have a dating profile (display name, bio, date of birth, gender, looking for, interests, photos). Profile data is in Firestore (`profiles/{uid}`); photos are in Firebase Storage (`profiles/{uid}/photos/`).
 - **Dashboard**: Simple welcome screen for signed-in users with a link to profile.
 - **Explore**: Placeholder / example content (can become discovery later).
 
-## Main flows
+## Product phases (vision)
+
+- **Pre-event:** Profile, join event (invite code/link), onboarding → *partially implemented (auth, profile).*
+- **During event:** Host-run activities, timers, pairings, no in-app chat → *not yet implemented.*
+- **Post-event:** View attendees, like/match, unlock chat → *not yet implemented.*
+
+## Main flows (current)
 
 1. **Auth flow**: Root redirects by auth state → `(auth)/login` or `(auth)/signup` vs `(app)` tabs. Login/signup use `AuthContext`; on success, router replaces to `(app)`.
 2. **Profile flow**: Profile tab shows current user’s profile (or “Complete your profile”). Edit screen loads profile via `useProfile`, saves via `useSetProfileMutation`, uploads photos via `useUploadProfilePhotoMutation` (TanStack Query). Data is read/written through `src/lib/firestore/profiles.ts` and `src/lib/storage/profile-photos.ts`.

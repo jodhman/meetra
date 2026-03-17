@@ -1,0 +1,80 @@
+---
+description: Core product concept - event-based dating, Meet → Interact → Then Match
+alwaysApply: true
+---
+
+# Core Product Concept
+
+The app is an **event-based dating platform** that enables people to meet and interact in real life through structured, gamified experiences.
+
+**Instead of traditional swiping:** users join or create singles events where **interaction happens first, and matching happens after**.
+
+---
+
+## Product Flow
+
+### 1. Pre-Event
+
+Users prepare by:
+
+- Creating a personal dating profile
+- Joining an event via an invite code or link
+- Onboarding that further strengthens the dating profile
+
+**Goal:** Light context before meeting, without replacing real interaction.
+
+### 2. During Event
+
+The app guides **real-world interaction** through structured activities controlled by the event host.
+
+**Principles:**
+
+- **No chatting inside the app during the event** — focus is on in-person interaction
+- The app is a **facilitator**, not a replacement
+
+**Host capabilities (game modes):**
+
+- Timed 1-on-1 rotations
+- Group icebreaker games
+- Compatibility quizzes
+- Social challenges
+
+**App provides:** Instructions, timers, pairings/group assignments, conversation prompts.
+
+**Goal:** Remove awkwardness and encourage natural interaction.
+
+### 3. Post-Event
+
+After the event:
+
+- Users view attendees they interacted with (gamified experience)
+- Users can like people they’re interested in
+- Users see who liked them
+
+**If two users like each other:** a match is created and a private chat is unlocked.
+
+**Rule:** Matching and messaging are **only enabled after the event**.
+
+---
+
+## Core Value Proposition
+
+- Real-life interaction comes first
+- The app structures and enhances social experiences
+- Matching is based on actual encounters, not just profiles
+
+---
+
+## Target Use Cases
+
+1. **Private events** — house parties, birthday events, friend-hosted singles nights
+2. **Organized events** — singles nights at bars, dating event companies, university or community events
+3. **Partnered venues** — bars, clubs, cafes hosting recurring singles events
+
+---
+
+## Summary
+
+**Meet → Interact → Then Match**
+
+The product creates temporary, event-based dating environments and shifts dating from passive swiping to active, shared experiences. When implementing features or making product decisions, keep this flow and these principles in mind.

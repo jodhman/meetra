@@ -14,5 +14,5 @@ alwaysApply: true
   - `src/lib/` – Firebase, auth, Firestore, Storage helpers
   - `src/contexts/` – React context providers (e.g. Auth)
   - `src/constants/` – theme, config constants
-- **Domain**: Dating app. Users sign up, maintain a dating profile (bio, photos, interests), and see a dashboard when signed in.
+- **Domain**: Event-based dating platform (see core-product-concept rule). Users sign up, maintain a dating profile (bio, photos, interests), and see a dashboard when signed in; events, host flows, and post-event matching are part of the product vision.
 - **Documentation**: High-level app description lives in [docs/APP.md](docs/APP.md). System-specific docs (auth, Firebase, profile flow, TanStack Query) live in [docs/skills/](docs/skills/). Keep these in sync when changing behavior (see docs-and-rules rule).
