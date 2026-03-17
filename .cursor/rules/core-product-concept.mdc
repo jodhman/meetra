@@ -31,6 +31,7 @@ The app guides **real-world interaction** through structured activities controll
 
 - **No chatting inside the app during the event** — focus is on in-person interaction
 - The app is a **facilitator**, not a replacement
+- **Minimize embarrassment** — e.g. temporary anonymity at the right time so users can participate without fear of exposure when it matters most
 
 **Host capabilities (game modes):**
 
@@ -41,7 +42,9 @@ The app guides **real-world interaction** through structured activities controll
 
 **App provides:** Instructions, timers, pairings/group assignments, conversation prompts.
 
-**Goal:** Remove awkwardness and encourage natural interaction.
+**QR codes (core):** QR is vital for maximizing interactions — for games, for connecting, and for tracking. Scanning QRs acts as **checkpoints** while users navigate the dating landscape. Collecting QRs is encouraged; they reward digitally (e.g. more post-event likes per scan, prestige on profile) and power leaderboards (“top candidate”, “top …”). Many challenges/games use QR somehow. See [docs/BLUEPRINT.md](docs/BLUEPRINT.md) for details.
+
+**Goal:** Remove awkwardness, minimize embarrassment, and encourage natural interaction.
 
 ### 3. Post-Event
 
@@ -51,9 +54,11 @@ After the event:
 - Users can like people they’re interested in
 - Users see who liked them
 
-**If two users like each other:** a match is created and a private chat is unlocked.
+**If two users like each other:** a **match** is created and a private chat is unlocked.
 
 **Rule:** Matching and messaging are **only enabled after the event**.
+
+**In-app terminology:** A **soft match** is the term used in the app for a *potential* match — nothing is sure yet, not a confirmed match. A **match** is the sure outcome when two users like each other (chat unlocked).
 
 ---
 
@@ -62,8 +67,15 @@ After the event:
 - Real-life interaction comes first
 - The app structures and enhances social experiences
 - Matching is based on actual encounters, not just profiles
+- We minimize embarrassment (e.g. temporary anonymity when it’s most helpful)
 
 ---
+
+## Soft matchmaking
+
+A **soft matchmaking** layer targets more specific groups, niches, or strong preferences (e.g. age, interests, intent). Events or cohorts can be filtered or suggested so users are more likely to meet people in their niche. This complements the event-based flow rather than replacing it.
+
+**Soft match (in-app term):** Use “soft match” in the app to mean a *potential* match — nothing guaranteed, not a sure thing. Contrast with **match**, which is the confirmed outcome (mutual like, chat unlocked).
 
 ## Target Use Cases
 
@@ -77,4 +89,4 @@ After the event:
 
 **Meet → Interact → Then Match**
 
-The product creates temporary, event-based dating environments and shifts dating from passive swiping to active, shared experiences. When implementing features or making product decisions, keep this flow and these principles in mind.
+The product creates temporary, event-based dating environments and shifts dating from passive swiping to active, shared experiences. **QR codes** are core (checkpoints, games, stats, leaderboards, rewards). **Soft matchmaking** targets niches and preferences. When implementing features or making product decisions, keep this flow and these principles in mind. Extended blueprint: [docs/BLUEPRINT.md](docs/BLUEPRINT.md).

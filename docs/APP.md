@@ -1,6 +1,6 @@
-# Singles Night – App overview
+# Meetra – App overview
 
-Event-based dating platform: users **Meet → Interact → Then Match** at singles events rather than swiping. Full product concept is in [.cursor/rules/core-product-concept.mdc](../.cursor/rules/core-product-concept.mdc).
+Event-based dating platform: users **Meet → Interact → Then Match** at singles events rather than swiping. Full product concept is in [.cursor/rules/core-product-concept.mdc](../.cursor/rules/core-product-concept.mdc). Detailed vision (QR, leaderboards, rewards, soft matchmaking) is in [BLUEPRINT.md](BLUEPRINT.md).
 
 **Stack:** Expo (React Native), TypeScript, Firebase (Auth, Firestore, Storage), TanStack Query.
 
