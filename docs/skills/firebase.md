@@ -10,7 +10,7 @@
 
 - **Collection**: `profiles`
 - **Document ID**: Firebase Auth UID.
-- **Fields**: displayName, bio, dateOfBirth, gender, lookingFor, photoURLs (string[]), interests (string[]), createdAt, updatedAt.
+- **Fields**: displayName, bio, dateOfBirth, gender, lookingFor, photos (`{ id: string; url: string }[]` ordered), vibeTags (string[], max 3), eventIntention (string), prompts (`{ promptId: string; answer: string }[]`), talkAbout (string), interests (string[]), createdAt, updatedAt.
 - **Rules** (`firestore.rules`): Authenticated read any profile; create/update/delete only own doc (`request.auth.uid == userId`).
 
 ## Storage

@@ -1,13 +1,13 @@
-import * as ImagePicker from 'expo-image-picker';
 import { Image } from 'expo-image';
+import * as ImagePicker from 'expo-image-picker';
 import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
-  Alert,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  View,
+    Alert,
+    KeyboardAvoidingView,
+    Platform,
+    ScrollView,
+    View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -18,10 +18,20 @@ import { Label } from '@/components/ui/label';
 import { Text } from '@/components/ui/text';
 import { useAuth } from '@/contexts/auth-context';
 import {
-  useProfile,
-  useSetProfileMutation,
-  useUploadProfilePhotoMutation,
+    useProfile,
+    useSetProfileMutation,
+    useUploadProfilePhotoMutation,
 } from '@/hooks/use-profile-query';
+import {
+  EVENT_INTENTION_OPTIONS,
+  MAX_PROFILE_PROMPTS,
+  MAX_VIBE_TAGS,
+  PROFILE_PROMPT_CATEGORIES,
+  VIBE_TAG_GROUPS,
+  type ProfilePrompt,
+  type ProfilePromptCategory,
+  promptTextById,
+} from '@/constants/profile-prompts';
 import { DEFAULT_PROFILE, type DatingProfile } from '@/lib/firestore/profiles';
 
 const GENDER_OPTIONS = ['', 'Male', 'Female', 'Non-binary', 'Other'];
@@ -57,11 +67,30 @@ export default function ProfileEditScreen() {
         dateOfBirth: profile.dateOfBirth,
         gender: profile.gender,
         lookingFor: profile.lookingFor,
-        photoURLs: profile.photoURLs,
+        photos: profile.photos,
         interests: profile.interests,
+        vibeTags: profile.vibeTags,
+        eventIntention: profile.eventIntention,
+        prompts: profile.prompts,
+        talkAbout: profile.talkAbout,
       });
     }
   }, [profile]);
+
+  const [promptBuilder, setPromptBuilder] = useState<{
+    slotIndex: number | null;
+    categoryId: string;
+    promptId: string;
+    answer: string;
+  } | null>(null);
+
+  function findPromptCategoryAndPrompt(promptId: string): { category: ProfilePromptCategory; prompt: ProfilePrompt } | null {
+    for (const category of PROFILE_PROMPT_CATEGORIES) {
+      const prompt = category.prompts.find((p) => p.id === promptId);
+      if (prompt) return { category, prompt };
+    }
+    return null;
+  }
 
   async function pickImage() {
     if (!user?.uid) return;
@@ -84,16 +113,16 @@ export default function ProfileEditScreen() {
       const blob = await response.blob();
       const photoId = `${Date.now()}`;
       const url = await uploadPhotoMutation.mutateAsync({ photoId, blob });
-      setForm((prev) => ({ ...prev, photoURLs: [...prev.photoURLs, url] }));
+      setForm((prev) => ({ ...prev, photos: [...prev.photos, { id: photoId, url }] }));
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Failed to upload photo.');
     }
   }
 
-  function removePhoto(url: string) {
+  function removePhoto(photoId: string) {
     setForm((prev) => ({
       ...prev,
-      photoURLs: prev.photoURLs.filter((u) => u !== url),
+      photos: prev.photos.filter((p) => p.id !== photoId),
     }));
   }
 
@@ -104,6 +133,75 @@ export default function ProfileEditScreen() {
         ? prev.interests.filter((i) => i !== interest)
         : [...prev.interests, interest],
     }));
+  }
+
+  function movePhoto(fromIndex: number, toIndex: number) {
+    setForm((prev) => {
+      if (toIndex < 0 || toIndex >= prev.photos.length) return prev;
+      const photos = [...prev.photos];
+      const [item] = photos.splice(fromIndex, 1);
+      photos.splice(toIndex, 0, item);
+      return { ...prev, photos };
+    });
+  }
+
+  function toggleVibeTag(tag: string) {
+    setForm((prev) => {
+      if (prev.vibeTags.includes(tag)) {
+        return { ...prev, vibeTags: prev.vibeTags.filter((t) => t !== tag) };
+      }
+      if (prev.vibeTags.length >= MAX_VIBE_TAGS) return prev;
+      return { ...prev, vibeTags: [...prev.vibeTags, tag] };
+    });
+  }
+
+  function startPromptBuilder(slotIndex: number | null) {
+    if (slotIndex == null && form.prompts.length >= MAX_PROFILE_PROMPTS) return;
+    const defaultCategory = PROFILE_PROMPT_CATEGORIES[0];
+    setPromptBuilder({
+      slotIndex,
+      categoryId: defaultCategory.id,
+      promptId: defaultCategory.prompts[0]?.id ?? '',
+      answer: slotIndex != null ? form.prompts[slotIndex]?.answer ?? '' : '',
+    });
+  }
+
+  function replacePromptForSlot(slotIndex: number) {
+    const existing = form.prompts[slotIndex];
+    const resolved = existing ? findPromptCategoryAndPrompt(existing.promptId) : null;
+    const category = resolved?.category ?? PROFILE_PROMPT_CATEGORIES[0];
+    const prompt = resolved?.prompt ?? category.prompts[0];
+    setPromptBuilder({
+      slotIndex,
+      categoryId: category.id,
+      promptId: prompt?.id ?? '',
+      answer: existing?.answer ?? '',
+    });
+  }
+
+  function savePromptBuilder() {
+    if (!promptBuilder) return;
+    if (!promptBuilder.promptId) return;
+    const answer = promptBuilder.answer.trim();
+    if (!answer) {
+      setError('Please add an answer for your prompt.');
+      return;
+    }
+    setError(null);
+
+    if (promptBuilder.slotIndex == null) {
+      setForm((prev) => ({
+        ...prev,
+        prompts: [...prev.prompts, { promptId: promptBuilder.promptId, answer }],
+      }));
+    } else {
+      setForm((prev) => {
+        const prompts = [...prev.prompts];
+        prompts[promptBuilder.slotIndex!] = { promptId: promptBuilder.promptId, answer };
+        return { ...prev, prompts };
+      });
+    }
+    setPromptBuilder(null);
   }
 
   async function handleSave() {
@@ -147,10 +245,10 @@ export default function ProfileEditScreen() {
             </CardHeader>
             <CardContent className="gap-4">
               <View className="flex-row flex-wrap gap-2">
-                {form.photoURLs.map((url) => (
-                  <View key={url} className="relative">
+                {form.photos.map((p, idx) => (
+                  <View key={p.id} className="relative">
                     <Image
-                      source={{ uri: url }}
+                      source={{ uri: p.url }}
                       className="h-20 w-20 rounded-lg bg-muted"
                       contentFit="cover"
                     />
@@ -158,9 +256,27 @@ export default function ProfileEditScreen() {
                       variant="destructive"
                       size="icon"
                       className="absolute -right-2 -top-2 h-6 w-6 rounded-full"
-                      onPress={() => removePhoto(url)}>
+                      onPress={() => removePhoto(p.id)}>
                       <Text className="text-xs">×</Text>
                     </Button>
+                    {idx > 0 ? (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="absolute -left-2 -top-2 h-6 w-6 rounded-full px-0"
+                        onPress={() => movePhoto(idx, idx - 1)}>
+                        <Text className="text-[10px]">^</Text>
+                      </Button>
+                    ) : null}
+                    {idx < form.photos.length - 1 ? (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="absolute -left-2 -bottom-2 h-6 w-6 rounded-full px-0"
+                        onPress={() => movePhoto(idx, idx + 1)}>
+                        <Text className="text-[10px]">v</Text>
+                      </Button>
+                    ) : null}
                   </View>
                 ))}
                 <Button
@@ -260,6 +376,156 @@ export default function ProfileEditScreen() {
                   </Button>
                 ))}
               </View>
+            </CardContent>
+          </Card>
+
+          <Card className="mt-6">
+            <CardHeader>
+              <CardTitle>Event intention</CardTitle>
+              <CardDescription>What are you here for?</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <View className="flex-row flex-wrap gap-2">
+                {EVENT_INTENTION_OPTIONS.map((opt) => (
+                  <Button
+                    key={opt}
+                    variant={form.eventIntention === opt ? 'default' : 'outline'}
+                    size="sm"
+                    onPress={() => setForm((p) => ({ ...p, eventIntention: opt }))}>
+                    <Text>{opt}</Text>
+                  </Button>
+                ))}
+              </View>
+            </CardContent>
+          </Card>
+
+          <Card className="mt-6">
+            <CardHeader>
+              <CardTitle>Vibe tags</CardTitle>
+              <CardDescription>Select up to {MAX_VIBE_TAGS}.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <View className="flex-row flex-wrap gap-2">
+                {VIBE_TAG_GROUPS.flatMap((g) => g.tags).map((tag) => (
+                  <Button
+                    key={tag}
+                    variant={form.vibeTags.includes(tag) ? 'default' : 'outline'}
+                    size="sm"
+                    onPress={() => toggleVibeTag(tag)}>
+                    <Text>{tag}</Text>
+                  </Button>
+                ))}
+              </View>
+            </CardContent>
+          </Card>
+
+          <Card className="mt-6">
+            <CardHeader>
+              <CardTitle>Prompts</CardTitle>
+              <CardDescription>
+                Add up to {MAX_PROFILE_PROMPTS}. Choose a question and answer it honestly.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="gap-4">
+              {form.prompts.length === 0 ? (
+                <View>
+                  <Text className="text-sm text-muted-foreground">No prompts yet.</Text>
+                </View>
+              ) : null}
+
+              {form.prompts.map((p, idx) => (
+                <View key={`${p.promptId}-${idx}`} className="gap-2 rounded-md border-border/50 bg-muted/20 p-3">
+                  <View className="flex-row items-center justify-between gap-2">
+                    <Text className="text-sm font-medium text-foreground">
+                      {promptTextById(p.promptId) ?? 'Prompt'}
+                    </Text>
+                    <Button variant="destructive" size="sm" onPress={() => setForm((prev) => ({ ...prev, prompts: prev.prompts.filter((_, i) => i !== idx) }))}>
+                      <Text>Remove</Text>
+                    </Button>
+                  </View>
+                  <Text className="text-sm text-muted-foreground">{p.answer}</Text>
+                  <Button variant="outline" size="sm" onPress={() => replacePromptForSlot(idx)}>
+                    <Text>Replace</Text>
+                  </Button>
+                </View>
+              ))}
+
+              {form.prompts.length < MAX_PROFILE_PROMPTS ? (
+                <Button variant="outline" onPress={() => startPromptBuilder(null)}>
+                  <Text>Add prompt</Text>
+                </Button>
+              ) : null}
+
+              {promptBuilder ? (
+                <View className="gap-3 rounded-md border-border/50 bg-background p-3">
+                  <View className="flex-row flex-wrap gap-2">
+                    {PROFILE_PROMPT_CATEGORIES.map((cat) => (
+                      <Button
+                        key={cat.id}
+                        variant={promptBuilder.categoryId === cat.id ? 'default' : 'outline'}
+                        size="sm"
+                        onPress={() => {
+                          const firstPrompt = cat.prompts[0];
+                          setPromptBuilder((prev) => {
+                            if (!prev) return prev;
+                            return { ...prev, categoryId: cat.id, promptId: firstPrompt?.id ?? '' };
+                          });
+                        }}>
+                        <Text>{cat.label}</Text>
+                      </Button>
+                    ))}
+                  </View>
+
+                  <View className="flex-row flex-wrap gap-2">
+                    {(PROFILE_PROMPT_CATEGORIES.find((c) => c.id === promptBuilder.categoryId)?.prompts ?? []).map((pr) => (
+                      <Button
+                        key={pr.id}
+                        variant={promptBuilder.promptId === pr.id ? 'default' : 'outline'}
+                        size="sm"
+                        onPress={() => setPromptBuilder((prev) => (prev ? { ...prev, promptId: pr.id } : prev))}>
+                        <Text>{pr.text}</Text>
+                      </Button>
+                    ))}
+                  </View>
+
+                  <View className="gap-2">
+                    <Label nativeID="promptAnswer">Your answer</Label>
+                    <Input
+                      nativeID="promptAnswerInput"
+                      placeholder="Write a short, specific answer…"
+                      value={promptBuilder.answer}
+                      onChangeText={(t) => setPromptBuilder((prev) => (prev ? { ...prev, answer: t.slice(0, 250) } : prev))}
+                      multiline
+                      numberOfLines={3}
+                    />
+                  </View>
+
+                  <View className="flex-row gap-2">
+                    <Button variant="default" className="flex-1" onPress={savePromptBuilder}>
+                      <Text>Save prompt</Text>
+                    </Button>
+                    <Button variant="outline" className="flex-1" onPress={() => setPromptBuilder(null)}>
+                      <Text>Cancel</Text>
+                    </Button>
+                  </View>
+                </View>
+              ) : null}
+            </CardContent>
+          </Card>
+
+          <Card className="mt-6">
+            <CardHeader>
+              <CardTitle>Talk to me about</CardTitle>
+              <CardDescription>Use this as your easy conversation starter.</CardDescription>
+            </CardHeader>
+            <CardContent className="gap-2">
+              <Input
+                placeholder="Ask me about travel, music, or something we could both geek out on…"
+                value={form.talkAbout}
+                onChangeText={(t) => setForm((p) => ({ ...p, talkAbout: t }))}
+                multiline
+                numberOfLines={3}
+              />
             </CardContent>
           </Card>
 

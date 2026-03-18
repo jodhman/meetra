@@ -1,14 +1,16 @@
 # Profile flow
 
+**Product vision:** Meetra will move toward a **layered, phase-based profile** (Lite → Social → Full). See [progressive-profile.md](./progressive-profile.md). Today the app uses a **single static profile** for all contexts.
+
 ## Overview
 
 Users have one dating profile per account. Profile is stored in Firestore (`profiles/{uid}`); photos in Storage (`profiles/{uid}/photos/`). UI: view (profile tab) and edit screen.
 
 ## Data
 
-- **Type**: `DatingProfile` in `src/lib/firestore/profiles.ts` (displayName, bio, dateOfBirth, gender, lookingFor, photoURLs, interests, createdAt, updatedAt).
+- **Type**: `DatingProfile` in `src/lib/firestore/profiles.ts` (displayName, bio, dateOfBirth, gender, lookingFor, photos, vibeTags, eventIntention, prompts, talkAbout, interests, createdAt, updatedAt).
 - **Read/write**: `getProfile(uid)`, `setProfile(uid, data)` in `src/lib/firestore/profiles.ts`.
-- **Photos**: `uploadProfilePhoto(uid, photoId, blob)` in `src/lib/storage/profile-photos.ts`; URLs are stored in the profile doc’s `photoURLs` array.
+- **Photos (ordered)**: `uploadProfilePhoto(uid, photoId, blob)` in `src/lib/storage/profile-photos.ts`; the profile doc stores an ordered `photos: { id, url }[]` array (index 0 = main/hero photo). Legacy `photoURLs` is read for existing users and mapped into `photos`.
 
 ## TanStack Query
 
@@ -18,8 +20,8 @@ Users have one dating profile per account. Profile is stored in Firestore (`prof
 
 ## Screens
 
-- **Profile tab** (`src/app/(app)/profile/index.tsx`): Uses `useProfile(user?.uid)`. Shows “Complete your profile” if empty, else card with photos, bio, interests and “Edit profile”.
-- **Edit** (`src/app/(app)/profile/edit.tsx`): Uses `useProfile` for initial data, `useSetProfileMutation` for save, `useUploadProfilePhotoMutation` for adding photos. Form state is local; on save, mutation runs and invalidates profile query, then router.back().
+- **Profile tab** (`src/app/(app)/profile/index.tsx`): Uses `useProfile(user?.uid)`. Shows “Complete your profile” if empty, else renders a layered Lite/Social/Full preview with ordered photos, `vibeTags`, prompt cards, and phase-specific visibility.
+- **Edit** (`src/app/(app)/profile/edit.tsx`): Uses `useProfile` for initial data, `useSetProfileMutation` for save. Edit supports ordered photo reordering, `eventIntention`, fixed `vibeTags` (max 3), prompt slots (max 5), and `talkAbout`.
 
 ## Adding fields
 
