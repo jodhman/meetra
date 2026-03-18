@@ -1,6 +1,6 @@
 # Meetra – App overview
 
-Event-based dating platform: users **Meet → Interact → Then Match** at singles events rather than swiping. Full product concept is in [.cursor/rules/core-product-concept.mdc](../.cursor/rules/core-product-concept.mdc). Detailed vision (QR, leaderboards, rewards, soft matchmaking) is in [BLUEPRINT.md](BLUEPRINT.md).
+Event-based dating platform: users **Meet → Interact → Then Match** at singles events rather than swiping. Meetra targets both **dedicated singles/dating-event organisers** and **regular event organisers** who want to augment their event with a **dating layer**. The app offers **modes** for different event types. **V1:** three example event types (TBD) covering both categories as first modes. Full product concept is in [.cursor/rules/core-product-concept.mdc](../.cursor/rules/core-product-concept.mdc). Detailed vision (QR, leaderboards, rewards, soft matchmaking) is in [BLUEPRINT.md](BLUEPRINT.md). **Progressive profile** (Lite / Social / Full by event phase): [skills/progressive-profile.md](skills/progressive-profile.md).
 
 **Stack:** Expo (React Native), TypeScript, Firebase (Auth, Firestore, Storage), TanStack Query.
 
