@@ -14,6 +14,14 @@ Text sketch of how the app should work end-to-end. Implementation status is note
 
 ---
 
+## Incentives & monetization (organisers-first)
+
+Meetra monetizes from event organisers (not from users repeatedly trying and failing). This **organiser-first** model aligns incentives with the thing that actually matters: event quality, participant comfort, and real in-person connection.
+
+Some dating products are optimized for engagement/retention (a rotten dating-app churn market) rather than mutual outcomes. Meetra is intentionally designed to reward real-world interaction and “meet first, then match” behavior instead of churn.
+
+We position Meetra as the “angels coming to save the dating world” — not with hype, but with a system where incentives support real connection.
+
 ## 1. QR codes as core
 
 QR codes are **core and vital** for maximizing interactions. They are used for games, for connecting people, and for keeping track of statistics.
@@ -57,13 +65,13 @@ Rule: Soft matchmaking **supplements** the event-based flow; it does not replace
 
 ## 3. Progressive profile visibility
 
-Meetra uses a **layered profile**, not one static profile everywhere:
+Meetra uses a **layered profile**, not one static profile everywhere. **Wrong profile = Tinder-with-events, LinkedIn bios, or awkward info dumps.** **Right profile = real-time interaction tool** — especially during the event.
 
-- **Before event — Lite:** Intrigue + safety (minimal disclosure; no full pre-screening like a swipe app).
-- **During event — Social:** Conversation fuel (prompts, chips, app-generated openers); often **unlocked after** QR scan, same game/group, or interaction milestone — rewards real-world engagement.
-- **After event — Full:** Match decision + trust (full gallery/bio, lifestyle, **interaction recap**, mutual like → chat).
+- **Before event — Lite:** Reduce anxiety (“okay to show up?”); curiosity only — strip down (photo, name, 1 hook, few tags).
+- **During event — Social (conversation engine):** Enable interaction (“what do I say right now?”) — **talk hooks** (top priority), **real-time vibe/status**, **event-specific intent**, **auto icebreaker card**, **interaction status** after QR/activity, **game-context layer** when a mode is active, **minimal** identity only. **Do not** surface full bio, job, height, dealbreakers, social links — talk first, evaluate later. Often **unlocked after** QR / game cohort / milestone where designed.
+- **After event — Full:** Support decision (“see them again?”) — full gallery/bio, compatibility, **interaction recap**, mutual like → chat.
 
-Six content blocks: Identity, Vibe, Conversation, Compatibility (light), **Event** (badges, crossed paths), Safety/trust (visibility per phase, report/block, built in from day one). Visual direction: card-based, warm, playful — not Tinder/LinkedIn. **V1 spec** and full detail: [docs/skills/progressive-profile.md](skills/progressive-profile.md).
+Six content blocks (schema): Identity, Vibe, Conversation, Compatibility (mostly post-event), **Event** (status + recap), Safety/trust. Full philosophy, layout, and V1 spec: [docs/skills/progressive-profile.md](skills/progressive-profile.md).
 
 ---
 
@@ -76,8 +84,8 @@ We want to **minimize embarrassment** so people can engage freely. One lever is 
 ## 5. Product flow (recap with QR and matchmaking)
 
 - **Pre-event:** Lite profile, join event (invite/link), onboarding; optional soft matchmaking (event suggestions / niches).
-- **During event:** No in-app chat. Host runs games; QR used for checkpoints, games, and connecting. **Social profile layer** (conversation fuel) unlocks after interaction milestones where designed. Stats and leaderboards in real time or at end of event. Collecting QRs rewards digitally (more post-event likes, prestige). Temporary anonymity where it reduces embarrassment (e.g. in certain games or actions).
-- **Post-event:** **Full profile** to people you interacted with; view attendees (gamified), leaderboards, like flow; more likes allowed or boosted based on QR performance. Soft matches (potentials) vs **match** (mutual like → chat unlocked). Prestige visible on profile. Anonymity can apply at “right time” (e.g. who liked you revealed only when appropriate).
+- **During event:** No in-app chat/messages. Host runs games; QR used for checkpoints, games, and connecting. **Social profile layer** (conversation fuel) unlocks after interaction milestones where designed. Stats and leaderboards in real time or at end of event. Collecting QRs rewards digitally (more post-event likes, prestige). Temporary anonymity where it reduces embarrassment (e.g. in certain games or actions).
+- **Post-event:** **Full profile** to people you interacted with; view attendees (gamified), leaderboards, like flow; more likes allowed or boosted based on QR performance. Soft matches (potentials) vs **match** (mutual like → chat unlocked). Chat remains locked until a mutual match; matching/chat are enabled only after the event. Prestige visible on profile. Anonymity can apply at “right time” (e.g. who liked you revealed only when appropriate).
 
 ---
 

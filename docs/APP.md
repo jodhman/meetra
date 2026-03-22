@@ -1,6 +1,6 @@
 # Meetra – App overview
 
-Event-based dating platform: users **Meet → Interact → Then Match** at singles events rather than swiping. Meetra targets both **dedicated singles/dating-event organisers** and **regular event organisers** who want to augment their event with a **dating layer**. The app offers **modes** for different event types. **V1:** three example event types (TBD) covering both categories as first modes. Full product concept is in [.cursor/rules/core-product-concept.mdc](../.cursor/rules/core-product-concept.mdc). Detailed vision (QR, leaderboards, rewards, soft matchmaking) is in [BLUEPRINT.md](BLUEPRINT.md). **Progressive profile** (Lite / Social / Full by event phase): [skills/progressive-profile.md](skills/progressive-profile.md).
+Event-based dating platform: users **Meet → Interact → Then Match** at singles events rather than swiping. Meetra targets both **dedicated singles/dating-event organisers** and **regular event organisers** who want to augment their event with a **dating layer**. The app offers **modes** for different event types. **V1:** three example event types (TBD) covering both categories as first modes. Monetization is **organiser-first**, aligning incentives with real event outcomes (not user churn) — we position Meetra as the “angels coming to save the dating world” via incentives. Full product concept is in [.cursor/rules/core-product-concept.mdc](../.cursor/rules/core-product-concept.mdc). Detailed vision (QR, leaderboards, rewards, soft matchmaking) is in [BLUEPRINT.md](BLUEPRINT.md). **Progressive profile** (Lite / Social / Full; during-event = **conversation engine**): [skills/progressive-profile.md](skills/progressive-profile.md).
 
 **Stack:** Expo (React Native), TypeScript, Firebase (Auth, Firestore, Storage), TanStack Query.
 
@@ -8,6 +8,7 @@ Event-based dating platform: users **Meet → Interact → Then Match** at singl
 
 - **Auth**: Email/password sign up and sign in via Firebase Auth. Unauthenticated users see login/signup; authenticated users see a tabbed app (Dashboard, Explore, Profile).
 - **Profile**: Users have a dating profile (display name, bio, date of birth, gender, looking for, interests, photos). Profile data is in Firestore (`profiles/{uid}`); photos are in Firebase Storage (`profiles/{uid}/photos/`).
+- **Events (MVP)**: Single active event per user. Hosts create events and share invite codes; users join by code; arrival check-in via check-in code; host can switch active event mode (rotations / icebreakers / quiz / challenges).
 - **Dashboard**: Simple welcome screen for signed-in users with a link to profile.
 - **Explore**: Placeholder / example content (can become discovery later).
 
@@ -21,6 +22,7 @@ Event-based dating platform: users **Meet → Interact → Then Match** at singl
 
 1. **Auth flow**: Root redirects by auth state → `(auth)/login` or `(auth)/signup` vs `(app)` tabs. Login/signup use `AuthContext`; on success, router replaces to `(app)`.
 2. **Profile flow**: Profile tab shows current user’s profile (or “Complete your profile”). Edit screen loads profile via `useProfile`, saves via `useSetProfileMutation`, uploads photos via `useUploadProfilePhotoMutation` (TanStack Query). Data is read/written through `src/lib/firestore/profiles.ts` and `src/lib/storage/profile-photos.ts`.
+3. **Event flow (MVP)**: Event tab loads `useActiveEventMembership`. No membership → create/join cards. With membership → event dashboard from `useEvent(eventId)`, check-in action, host controls for mode changes.
 
 ## Where key logic lives
 
@@ -29,9 +31,11 @@ Event-based dating platform: users **Meet → Interact → Then Match** at singl
 | Auth state, signIn, signUp, signOut | `src/contexts/auth-context.tsx`, `src/lib/auth.ts` |
 | Firebase config | `src/lib/firebase/config.ts` |
 | Firestore profile CRUD | `src/lib/firestore/profiles.ts` |
+| Firestore event + membership CRUD | `src/lib/firestore/events.ts` |
 | Profile photo upload | `src/lib/storage/profile-photos.ts` |
 | TanStack Query client & keys | `src/lib/query-client.ts`, `src/lib/query-keys.ts` |
 | Profile queries/mutations | `src/hooks/use-profile-query.ts` |
+| Event queries/mutations | `src/hooks/use-event-query.ts` |
 | Routes & layouts | `src/app/_layout.tsx`, `src/app/(auth)/`, `src/app/(app)/` |
 | Firestore rules | `firestore.rules` |
 | Storage rules | `storage.rules` |

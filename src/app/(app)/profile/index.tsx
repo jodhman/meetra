@@ -18,7 +18,8 @@ export default function ProfileScreen() {
   const { user, signOut } = useAuth();
   const router = useRouter();
   const { data: profile, isLoading, isError, refetch } = useProfile(user?.uid);
-  const [activeLayer, setActiveLayer] = useState<ProfileLayer>('full');
+  // During-event is the most important moment; show it by default.
+  const [activeLayer, setActiveLayer] = useState<ProfileLayer>('social');
 
   async function handleSignOut() {
     await signOut();
@@ -59,6 +60,37 @@ export default function ProfileScreen() {
     return profileForLayer(profile, activeLayer);
   }, [profile, activeLayer]);
 
+  const headerName = useMemo(() => {
+    const raw = (profile?.displayName ?? '').trim();
+    if (!raw) return 'No name';
+    if (activeLayer === 'full') return raw;
+    const first = raw.split(/\s+/)[0];
+    return first || raw;
+  }, [profile?.displayName, activeLayer]);
+
+  const icebreaker = useMemo(() => {
+    if (!layerProfile) return null;
+    if (activeLayer !== 'social') return null;
+
+    const talk = layerProfile.talkAbout.trim();
+    if (talk) {
+      // talkAbout is a freeform input; keep it short and readable.
+      const cleaned = talk.replace(/^ask me about\s+/i, '').replace(/^ask me\s+/i, '');
+      return `Try this opener: Ask me about ${cleaned}`;
+    }
+
+    const firstPrompt = layerProfile.prompts[0];
+    if (firstPrompt) {
+      const prefix = promptTextById(firstPrompt.promptId) ?? 'Prompt';
+      return `Try this opener: ${prefix}${firstPrompt.answer}`;
+    }
+
+    const firstInterest = layerProfile.interests[0];
+    if (firstInterest) return `Try this opener: What’s your favorite ${firstInterest.toLowerCase()}?`;
+
+    return null;
+  }, [activeLayer, layerProfile]);
+
   return (
     <SafeAreaView className="flex-1 bg-background" edges={['bottom']}>
       <ScrollView className="flex-1" contentContainerStyle={{ paddingHorizontal: 24, paddingVertical: 32 }}>
@@ -94,11 +126,11 @@ export default function ProfileScreen() {
                   ))}
                 </View>
               ) : null}
-              <CardTitle>{profile.displayName || 'No name'}</CardTitle>
+              <CardTitle>{headerName}</CardTitle>
               <CardDescription>
                 {age != null ? `${age} years` : ''}
-                {profile.gender ? ` · ${profile.gender}` : ''}
-                {profile.lookingFor ? ` · Looking for ${profile.lookingFor}` : ''}
+                {activeLayer === 'full' && profile.gender ? ` · ${profile.gender}` : ''}
+                {activeLayer === 'full' && profile.lookingFor ? ` · Looking for ${profile.lookingFor}` : ''}
                 {layerProfile?.eventIntention ? ` · ${layerProfile.eventIntention}` : ''}
               </CardDescription>
 
@@ -135,11 +167,35 @@ export default function ProfileScreen() {
                 </Button>
               </View>
 
+              {/* During-event: conversation engine first (talk hooks) */}
+              {activeLayer === 'social' && layerProfile?.talkAbout ? (
+                <View>
+                  <Text className="text-sm font-medium text-muted-foreground">Talk hook</Text>
+                  <Text className="mt-1 text-foreground">{layerProfile.talkAbout}</Text>
+                </View>
+              ) : null}
+
+              {icebreaker ? (
+                <View>
+                  <Text className="text-sm font-medium text-muted-foreground">Instant icebreaker</Text>
+                  <Text className="mt-1 text-foreground">{icebreaker}</Text>
+                </View>
+              ) : null}
+
+              {activeLayer === 'social' ? (
+                <View>
+                  <Text className="text-sm font-medium text-muted-foreground">Interaction status</Text>
+                  <Text className="mt-1 text-muted-foreground">Appears after QR scan / event activity (coming soon).</Text>
+                </View>
+              ) : null}
+
               {layerProfile?.prompts.length ? (
                 <View>
-                  <Text className="text-sm font-medium text-muted-foreground">Conversation prompts</Text>
+                  <Text className="text-sm font-medium text-muted-foreground">
+                    {activeLayer === 'full' ? 'Conversation prompts' : 'Talk hooks'}
+                  </Text>
                   <View className="mt-3 gap-3">
-                    {layerProfile.prompts.map((p) => (
+                    {(activeLayer === 'social' ? layerProfile.prompts.slice(0, 2) : layerProfile.prompts).map((p) => (
                       <View key={`${p.promptId}`} className="gap-2 rounded-md border-border/50 bg-muted/20 p-3">
                         <Text className="text-sm font-medium text-foreground">{promptTextById(p.promptId) ?? 'Prompt'}</Text>
                         <Text className="text-sm text-foreground">{p.answer}</Text>
@@ -149,18 +205,11 @@ export default function ProfileScreen() {
                 </View>
               ) : null}
 
-              {layerProfile?.talkAbout ? (
-                <View>
-                  <Text className="text-sm font-medium text-muted-foreground">Talk to me about</Text>
-                  <Text className="mt-1 text-foreground">{layerProfile.talkAbout}</Text>
-                </View>
-              ) : null}
-
               {layerProfile?.interests.length ? (
                 <View>
                   <Text className="text-sm font-medium text-muted-foreground">Interests</Text>
                   <View className="mt-2 flex-row flex-wrap gap-2">
-                    {layerProfile.interests.map((i) => (
+                    {layerProfile.interests.slice(0, 5).map((i) => (
                       <View key={i} className="rounded-full bg-muted px-3 py-1">
                         <Text className="text-sm text-foreground">{i}</Text>
                       </View>

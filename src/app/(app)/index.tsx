@@ -18,6 +18,9 @@ export default function DashboardScreen() {
         <Text className="text-2xl font-semibold text-foreground">Hello, {displayName}</Text>
         <Text className="mt-2 text-muted-foreground">Welcome to your dashboard.</Text>
         <View className="mt-8 gap-4">
+          <Button onPress={() => router.push('/(app)/event')}>
+            <Text>Open event hub</Text>
+          </Button>
           <Button onPress={() => router.push('/(app)/profile')}>
             <Text>View your profile</Text>
           </Button>

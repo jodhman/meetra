@@ -10,5 +10,20 @@ service cloud.firestore {
       allow read: if request.auth != null;
       allow create, update, delete: if request.auth != null && request.auth.uid == userId;
     }
+
+    // Events: host-created docs with invite/check-in codes and mode controls.
+    match /events/{eventId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null
+        && request.resource.data.hostId == request.auth.uid;
+      allow update, delete: if request.auth != null
+        && resource.data.hostId == request.auth.uid;
+    }
+
+    // Single active event membership per user (MVP).
+    match /eventMemberships/{userId} {
+      allow read, create, update, delete: if request.auth != null
+        && request.auth.uid == userId;
+    }
   }
 }

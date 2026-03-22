@@ -1,6 +1,6 @@
 # Profile flow
 
-**Product vision:** Meetra will move toward a **layered, phase-based profile** (Lite → Social → Full). See [progressive-profile.md](./progressive-profile.md). Today the app uses a **single static profile** for all contexts.
+**Product vision:** Meetra will move toward a **layered, phase-based profile** (Lite → Social → Full). During the event the UI should behave as a **conversation engine** (talk hooks, vibe, icebreakers), not a static résumé. See [progressive-profile.md](./progressive-profile.md). Today the app uses a **single static profile** for all contexts.
 
 ## Overview
 

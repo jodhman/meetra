@@ -34,7 +34,8 @@ export function profileForLayer(profile: DatingProfile, layer: ProfileLayer): Pr
       eventIntention: profile.eventIntention,
       prompts: profile.prompts.slice(0, 3),
       talkAbout: profile.talkAbout,
-      interests: profile.interests,
+      // During-event surface should stay lightweight; limit chips in UI.
+      interests: profile.interests.slice(0, 5),
       bio: '',
     };
   }

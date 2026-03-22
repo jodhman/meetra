@@ -23,7 +23,7 @@ Users prepare by:
 
 **Goal:** Light context before meeting, without replacing real interaction.
 
-**Progressive profile visibility:** Not one profile everywhere — a **layered profile** by phase: **before event** (Lite: curiosity, low-risk), **during event** (Social: conversation fuel, often unlocked after QR/interaction), **after event** (Full: match decision + recap). Aligns with UX progressive disclosure and safety (limit early personal disclosure). Full spec: [docs/skills/progressive-profile.md](docs/skills/progressive-profile.md).
+**Progressive profile visibility:** Not one profile everywhere — a **layered profile** by phase. **Before:** reduce anxiety / curiosity (Lite). **During:** the profile is a **conversation engine** (talk hooks, vibe state, intent, auto icebreakers, interaction + game layers) — not Tinder-with-events or LinkedIn bios. **After:** Full profile for decision + recap. Aligns with UX progressive disclosure and safety. Full spec: [docs/skills/progressive-profile.md](docs/skills/progressive-profile.md).
 
 ### 2. During Event
 
@@ -31,7 +31,7 @@ The app guides **real-world interaction** through structured activities controll
 
 **Principles:**
 
-- **No chatting inside the app during the event** — focus is on in-person interaction
+- **No in-app chat/messages during the event** — focus is on in-person interaction
 - The app is a **facilitator**, not a replacement
 - **Minimize embarrassment** — e.g. temporary anonymity at the right time so users can participate without fear of exposure when it matters most
 
@@ -53,7 +53,7 @@ After the event:
 
 **If two users like each other:** a **match** is created and a private chat is unlocked.
 
-**Rule:** Matching and messaging are **only enabled after the event**.
+**Rule:** Matching is allowed **only after the event ends**, and private chat/messages are unlocked **only after a mutual match**.
 
 **In-app terminology:** A **soft match** is the term used in the app for a *potential* match — nothing is sure yet, not a confirmed match. A **match** is the sure outcome when two users like each other (chat unlocked).
 
@@ -67,6 +67,15 @@ After the event:
 - We minimize embarrassment (e.g. temporary anonymity when it’s most helpful)
 
 ---
+
+## Incentives & monetization (organisers-first)
+
+Meetra’s business model is **organiser-first**: we monetize from event organisers, not from the users’ repeated “swipe/fail cycles”.
+This alignment matters because it lets us optimize for the outcome that everyone actually wants: participants having a good time, connecting in-person, and leaving the event with meaningful prospects.
+
+Many dating products are optimized for engagement/retention rather than mutual outcomes. Meetra is intentionally designed to be the *opposite*: an incentives-aligned dating layer that helps repair a dating experience shaped by a rotten dating-app churn market.
+
+Think of Meetra as the “angels coming to save the dating world” — not by promising miracles, but by building a system where the incentives reward real-world interactions instead of churn.
 
 ## Soft matchmaking
 
@@ -88,4 +97,4 @@ A **soft matchmaking** layer targets more specific groups, niches, or strong pre
 
 **Meet → Interact → Then Match**
 
-The product serves **event organisers** (both singles/dating-event organisers and regular organisers adding a dating layer) with **modes** for different event types; **initially three example event types** (TBD). **QR codes** are core (checkpoints, games, stats, leaderboards, rewards). **Soft matchmaking** targets niches and preferences. **Progressive profile visibility** (Lite / Social / Full by phase) supports UX, safety, and “meet first.” Blueprint: [docs/BLUEPRINT.md](docs/BLUEPRINT.md). Profile layers: [docs/skills/progressive-profile.md](docs/skills/progressive-profile.md).
+The product serves **event organisers** (both singles/dating-event organisers and regular organisers adding a dating layer) with **modes** for different event types; **initially three example event types** (TBD). **QR codes** are core (checkpoints, games, stats, leaderboards, rewards). **Soft matchmaking** targets niches and preferences. **Progressive profile visibility** (Lite / Social / Full; **during-event = conversation engine**, not Tinder-with-events) supports UX, safety, and “meet first.” Blueprint: [docs/BLUEPRINT.md](docs/BLUEPRINT.md). Profile layers: [docs/skills/progressive-profile.md](docs/skills/progressive-profile.md).

@@ -13,6 +13,7 @@ export default function AppLayout() {
           tabBarActiveTintColor: undefined,
         }}>
         <Tabs.Screen name="index" options={{ title: 'Dashboard', tabBarLabel: 'Dashboard' }} />
+        <Tabs.Screen name="event" options={{ title: 'Event', tabBarLabel: 'Event', headerShown: false }} />
         <Tabs.Screen name="explore" options={{ title: 'Explore', tabBarLabel: 'Explore' }} />
         <Tabs.Screen
           name="profile"
