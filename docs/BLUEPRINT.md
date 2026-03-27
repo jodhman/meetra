@@ -1,6 +1,6 @@
 # Product blueprint (vision)
 
-Text sketch of how the app should work end-to-end. Implementation status is noted where relevant; most of this is future. See [APP.md](APP.md) for current state and [.cursor/rules/core-product-concept.mdc](../.cursor/rules/core-product-concept.mdc) for the core concept.
+Text sketch of how the app should work end-to-end. Implementation status is noted where relevant; most of this is future. See [APP.md](APP.md) for current state and [PRODUCT-CONCEPT.md](PRODUCT-CONCEPT.md) for the core narrative.
 
 ---
 
@@ -240,7 +240,6 @@ Related requirement: active modes (including Mystery Match) must include a priva
 ## 5. Product flow (recap with QR and matchmaking)
 
 - **Pre-event:** Lite profile, join event (invite/link), **general onboarding** foundation + optional **event onboarding** for tonight/mode needs; optional soft matchmaking (event suggestions / niches).
-- **During event:** No in-app chat/messages. Host runs games; QR used for checkpoints, games, and connecting. **Mystery Match (first V1 mode)** adds one hidden promising connection with progressive hints, soft proximity cues, and delayed reveal. **Social profile layer** (conversation fuel) unlocks after interaction milestones where designed. Stats and leaderboards in real time or at end of event. Collecting QRs rewards digitally (more post-event likes, prestige). Temporary anonymity where it reduces embarrassment (e.g. in certain games or actions).
 - **During event:** No in-app chat/messages. Host runs games; QR used for checkpoints, games, and connecting. **Mystery Match (first V1 mode)** adds one hidden promising connection with progressive hints, soft proximity cues, delayed reveal, and an explicit exit hatch (before/after reveal). **Social profile layer** (conversation fuel) unlocks after interaction milestones where designed. Stats and leaderboards in real time or at end of event. Collecting QRs rewards digitally (more post-event likes, prestige). Temporary anonymity where it reduces embarrassment (e.g. in certain games or actions).
 - **Post-event:** **Full profile** to people you interacted with; view attendees (gamified), leaderboards, like flow; more likes allowed or boosted based on QR performance. Soft matches (potentials) vs **match** (mutual like → chat unlocked). Chat remains locked until a mutual match; matching/chat are enabled only after the event. Prestige visible on profile. Anonymity can apply at “right time” (e.g. who liked you revealed only when appropriate).
 

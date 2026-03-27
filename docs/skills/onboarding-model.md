@@ -90,7 +90,7 @@ This keeps mode setup fast while still improving assignment quality and hint rel
 
 ## Related docs
 
-- [Core product concept](../../.cursor/rules/core-product-concept.mdc)
+- [Core product concept](../PRODUCT-CONCEPT.md)
 - [Product blueprint](../BLUEPRINT.md)
 - [Progressive profile visibility](./progressive-profile.md)
 - [Mystery Match mode](./mystery-match.md)

@@ -261,6 +261,6 @@ For Mystery Match, most clue material should come from general onboarding + exis
 
 ## Related docs
 
-- [Core product concept](../../.cursor/rules/core-product-concept.mdc) — Meet → Interact → Then Match  
+- [Core product concept](../PRODUCT-CONCEPT.md) — Meet → Interact → Then Match  
 - [BLUEPRINT.md](../BLUEPRINT.md) — QR, soft match, anonymity  
 - [Profile flow](./profile-flow.md) — current implementation (single static profile today; migrate toward this spec)

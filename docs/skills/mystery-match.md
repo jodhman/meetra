@@ -175,7 +175,7 @@ Recommended light event setup:
 
 ## Related docs
 
-- [Core product concept](../../.cursor/rules/core-product-concept.mdc)
+- [Core product concept](../PRODUCT-CONCEPT.md)
 - [Product blueprint](../BLUEPRINT.md)
 - [Onboarding model](./onboarding-model.md)
 - [Progressive profile visibility](./progressive-profile.md)

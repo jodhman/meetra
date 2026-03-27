@@ -5,7 +5,8 @@ alwaysApply: true
 
 # Documentation and rules
 
+- **Standalone library**: Treat [docs/](docs/) as a **complete, self-contained library** about the app—product vision, flows, and major systems—so someone can understand Meetra from `docs/` alone (e.g. onboarding a teammate, feeding an external AI, or reviewing strategy) without having to mine the codebase or rely on [.cursor/rules/](.cursor/rules/). Put substantive product and system truth in `docs/`; rules in `.cursor/rules/` add editor/agent constraints (stack, style, process), not the primary narrative.
 - **When you change behavior or add features**: update the relevant docs and rules so they stay accurate.
 - **Firebase**: After changing Firestore data shapes, access patterns, or Storage paths, update [firestore.rules](firestore.rules) and [storage.rules](storage.rules) as needed, and document in [docs/skills/firebase.md](docs/skills/firebase.md).
-- **App documentation**: Keep [docs/APP.md](docs/APP.md) (or equivalent) as the single high-level description of the app: what it does, main flows, and where key logic lives.
+- **App documentation**: Keep [docs/README.md](docs/README.md) as the entry point to this library. [docs/PRODUCT-CONCEPT.md](docs/PRODUCT-CONCEPT.md) holds the full product narrative (vision, flows, terminology). Keep [docs/APP.md](docs/APP.md) as the single high-level description of **current implementation**: what it does, main flows, and where key logic lives.
 - **Skills**: Document each major system (auth, Firebase, profile flow, TanStack Query, etc.) in [docs/skills/](docs/skills/). When adding or changing a system, add or update the corresponding skill file so the codebase stays documented for AI and developers.
