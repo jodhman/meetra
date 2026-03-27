@@ -34,6 +34,7 @@ The app guides **real-world interaction** through structured activities controll
 - **No in-app chat/messages during the event** — focus is on in-person interaction
 - The app is a **facilitator**, not a replacement
 - **Minimize embarrassment** — e.g. temporary anonymity at the right time so users can participate without fear of exposure when it matters most
+- **Focused, minimal UI while the event is active** — the flow and chrome should be **stripped down** to what serves that phase (host instructions, timers, pairings, QR, conversation-engine surfaces, etc.). Do not surface a full “general app” with unrelated navigation or pre/post-event affordances competing for attention during the live event
 
 **Host capabilities:** Organisers run the event through **modes** suited to the event type — e.g. timed 1-on-1 rotations, group icebreakers, compatibility quizzes, social challenges. Different events need different flows; Meetra should offer **multiple modes** so organisers can match the format to their crowd and venue.
 
@@ -97,4 +98,4 @@ A **soft matchmaking** layer targets more specific groups, niches, or strong pre
 
 **Meet → Interact → Then Match**
 
-The product serves **event organisers** (both singles/dating-event organisers and regular organisers adding a dating layer) with **modes** for different event types; **initially three example event types** (TBD). **QR codes** are core (checkpoints, games, stats, leaderboards, rewards). **Soft matchmaking** targets niches and preferences. **Progressive profile visibility** (Lite / Social / Full; **during-event = conversation engine**, not Tinder-with-events) supports UX, safety, and “meet first.” Blueprint: [docs/BLUEPRINT.md](docs/BLUEPRINT.md). Profile layers: [docs/skills/progressive-profile.md](docs/skills/progressive-profile.md).
+The product serves **event organisers** (both singles/dating-event organisers and regular organisers adding a dating layer) with **modes** for different event types; **initially three example event types** (TBD). **QR codes** are core (checkpoints, games, stats, leaderboards, rewards). **Soft matchmaking** targets niches and preferences. **Progressive profile visibility** (Lite / Social / Full; **during-event = conversation engine**, not Tinder-with-events) supports UX, safety, and “meet first.” **While an event is live, flows and UI stay stripped down** to phase-relevant surfaces (minimal chrome, not a full generic app). Blueprint: [docs/BLUEPRINT.md](docs/BLUEPRINT.md). Profile layers: [docs/skills/progressive-profile.md](docs/skills/progressive-profile.md).

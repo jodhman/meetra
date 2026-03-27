@@ -4,7 +4,7 @@
 
 - **Firebase JS SDK** only (Expo Go compatible). Config from `process.env.EXPO_PUBLIC_*` in `src/lib/firebase/config.ts`.
 - **Firestore**: profiles in `profiles/{uid}`; one doc per user. See `src/lib/firestore/profiles.ts` for types and CRUD.
-- **Firestore events (MVP)**: `events/{eventId}` and single active membership in `eventMemberships/{uid}`. See `src/lib/firestore/events.ts`.
+- **Firestore events (MVP)**: `events/{eventId}`, single active membership in `eventMemberships/{uid}`, and per-event roster/history in `events/{eventId}/members/{memberUid}`. See `src/lib/firestore/events.ts`.
 - **Storage**: profile photos at `profiles/{uid}/photos/{photoId}`. See `src/lib/storage/profile-photos.ts`.
 
 ## Firestore
@@ -23,6 +23,11 @@
 - **Document ID**: Firebase Auth UID.
 - **Fields**: eventId, role, status, joinedAt, checkedInAt.
 - **Rules**: User can read/write only own membership doc (`request.auth.uid == userId`).
+
+- **Subcollection**: `events/{eventId}/members`
+- **Document ID**: member Firebase Auth UID.
+- **Fields**: role, memberStatus (`joined` \| `checked_in` \| `removed`), joinedAt, checkedInAt, removedAt, removedByHostId.
+- **Rules**: Member can read/write own roster doc; host can read all roster docs for their event; host can update for admin (e.g. soft-remove). Deletes disallowed (history).
 
 ## Storage
 

@@ -107,13 +107,21 @@ export default function ProfileEditScreen() {
     });
     if (result.canceled || !result.assets?.[0]?.uri) return;
     setError(null);
+    const previousPhotos = form.photos;
     try {
       const uri = result.assets[0].uri;
       const response = await fetch(uri);
       const blob = await response.blob();
       const photoId = `${Date.now()}`;
       const url = await uploadPhotoMutation.mutateAsync({ photoId, blob });
-      setForm((prev) => ({ ...prev, photos: [...prev.photos, { id: photoId, url }] }));
+      const nextPhotos = [...previousPhotos, { id: photoId, url }];
+      setForm((prev) => ({ ...prev, photos: nextPhotos }));
+      try {
+        await setProfileMutation.mutateAsync({ photos: nextPhotos });
+      } catch (persistErr) {
+        setForm((prev) => ({ ...prev, photos: previousPhotos }));
+        setError(persistErr instanceof Error ? persistErr.message : 'Photo uploaded but could not save profile.');
+      }
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Failed to upload photo.');
     }

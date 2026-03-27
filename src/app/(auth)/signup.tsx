@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import React, { createElement, useState } from 'react';
 import { Alert, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -47,6 +47,59 @@ export default function SignupScreen() {
     }
   }
 
+  const signupFields = (
+    <>
+      <View className="gap-2">
+        <Label nativeID="email">Email</Label>
+        <Input
+          autoCapitalize="none"
+          autoComplete="email"
+          keyboardType="email-address"
+          placeholder="you@example.com"
+          value={email}
+          onChangeText={setEmail}
+          aria-labelledby="email"
+        />
+      </View>
+      <View className="gap-2">
+        <Label nativeID="password">Password</Label>
+        <Input
+          placeholder="••••••••"
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+          aria-labelledby="password"
+        />
+      </View>
+      <View className="gap-2">
+        <Label nativeID="confirmPassword">Confirm password</Label>
+        <Input
+          placeholder="••••••••"
+          secureTextEntry
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
+          aria-labelledby="confirmPassword"
+          {...(Platform.OS !== 'web'
+            ? { returnKeyType: 'go' as const, onSubmitEditing: handleSubmit }
+            : {})}
+        />
+      </View>
+      {Platform.OS === 'web'
+        ? createElement('button', {
+            type: 'submit',
+            className:
+              'pointer-events-none absolute h-0 w-0 overflow-hidden border-0 p-0 opacity-0',
+            tabIndex: -1,
+            'aria-hidden': true,
+            children: loading ? 'Creating account…' : 'Sign up',
+          })
+        : null}
+      <Button onPress={handleSubmit} disabled={loading} className="mt-2">
+        <Text>{loading ? 'Creating account…' : 'Sign up'}</Text>
+      </Button>
+    </>
+  );
+
   return (
     <SafeAreaView className="flex-1 bg-background">
       <KeyboardAvoidingView
@@ -67,43 +120,19 @@ export default function SignupScreen() {
               </View>
             ) : null}
 
-            <View className="gap-4">
-              <View className="gap-2">
-                <Label nativeID="email">Email</Label>
-                <Input
-                  autoCapitalize="none"
-                  autoComplete="email"
-                  keyboardType="email-address"
-                  placeholder="you@example.com"
-                  value={email}
-                  onChangeText={setEmail}
-                  aria-labelledby="email"
-                />
-              </View>
-              <View className="gap-2">
-                <Label nativeID="password">Password</Label>
-                <Input
-                  placeholder="••••••••"
-                  secureTextEntry
-                  value={password}
-                  onChangeText={setPassword}
-                  aria-labelledby="password"
-                />
-              </View>
-              <View className="gap-2">
-                <Label nativeID="confirmPassword">Confirm password</Label>
-                <Input
-                  placeholder="••••••••"
-                  secureTextEntry
-                  value={confirmPassword}
-                  onChangeText={setConfirmPassword}
-                  aria-labelledby="confirmPassword"
-                />
-              </View>
-              <Button onPress={handleSubmit} disabled={loading} className="mt-2">
-                <Text>{loading ? 'Creating account…' : 'Sign up'}</Text>
-              </Button>
-            </View>
+            {Platform.OS === 'web'
+              ? createElement(
+                  'form',
+                  {
+                    className: 'flex flex-col gap-4',
+                    onSubmit: (e: React.FormEvent<HTMLFormElement>) => {
+                      e.preventDefault();
+                      void handleSubmit();
+                    },
+                  },
+                  signupFields
+                )
+              : <View className="gap-4">{signupFields}</View>}
 
             <View className="mt-8 flex-row justify-center gap-1">
               <Text className="text-muted-foreground">Already have an account?</Text>

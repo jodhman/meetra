@@ -58,6 +58,8 @@ During the event there is **no in-app chat/messages**; the profile acts as an in
 
 **Replace static info with actionable info** — instead of leading with job, long bio, or generic interests alone, prioritize hooks, vibe, intent, and app-generated openers.
 
+**App chrome matches the phase:** During an **active** event, Meetra should feel **stripped down** overall — not only the profile card, but **navigation and screens** should emphasize only what serves that phase (host instructions, timers, QR, pairings, conversation surfaces). Pre-event and post-event tools (full profile editing, broad exploration, etc.) should not compete for attention while the event is live.
+
 ---
 
 ## During-event profile (core design)

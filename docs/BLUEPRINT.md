@@ -73,6 +73,8 @@ Meetra uses a **layered profile**, not one static profile everywhere. **Wrong pr
 
 Six content blocks (schema): Identity, Vibe, Conversation, Compatibility (mostly post-event), **Event** (status + recap), Safety/trust. Full philosophy, layout, and V1 spec: [docs/skills/progressive-profile.md](skills/progressive-profile.md).
 
+**During-event app surface (not only profile):** While an event is **active**, the **overall product experience** should stay **focused and minimal** — flows, navigation, and visible UI limited to what contributes to that phase (host mode, timers, scanning, pairings, conversation engine, etc.). Progressive disclosure applies to **chrome** as well as profile content: avoid presenting a full dashboard of unrelated features during the live event.
+
 ---
 
 ## 4. Minimize embarrassment / temporary anonymity

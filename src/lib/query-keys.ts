@@ -8,4 +8,6 @@ export const queryKeys = {
   profiles: () => ['profiles'] as const,
   activeEventMembership: (uid: string) => ['event-membership', uid] as const,
   event: (eventId: string) => ['event', eventId] as const,
+  eventRoster: (eventId: string) => ['event-roster', eventId] as const,
+  hostEndedEvents: (uid: string) => ['host-ended-events', uid] as const,
 } as const;

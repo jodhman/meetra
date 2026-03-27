@@ -20,6 +20,9 @@ export type EventMembershipRole = 'host' | 'participant';
 export type EventMembershipStatus = 'joined' | 'checked_in';
 export type EventDetailLayer = 'invite' | 'checked_in' | 'host';
 
+/** Roster row in `events/{eventId}/members/{uid}` — survives soft-remove for host history */
+export type EventMemberStatus = 'joined' | 'checked_in' | 'removed';
+
 export interface Event {
   title: string;
   shortBlurb: string;
@@ -39,6 +42,16 @@ export interface EventMembership {
   status: EventMembershipStatus;
   joinedAt: Timestamp | null;
   checkedInAt: Timestamp | null;
+}
+
+export interface EventMemberRow {
+  uid: string;
+  role: EventMembershipRole;
+  memberStatus: EventMemberStatus;
+  joinedAt: Timestamp | null;
+  checkedInAt: Timestamp | null;
+  removedAt: Timestamp | null;
+  removedByHostId: string | null;
 }
 
 export interface CreateEventInput {
@@ -72,6 +85,14 @@ export function membershipDocRef(uid: string) {
   return doc(db, 'eventMemberships', uid);
 }
 
+export function eventMembersCollectionRef(eventId: string) {
+  return collection(db, 'events', eventId, 'members');
+}
+
+export function eventMemberDocRef(eventId: string, uid: string) {
+  return doc(db, 'events', eventId, 'members', uid);
+}
+
 export function normalizeCode(input: string): string {
   return input.trim().toUpperCase().replace(/\s+/g, '');
 }
@@ -98,6 +119,7 @@ export async function createEventWithHost(hostUid: string, input: CreateEventInp
   const checkInCode = randomCode(CHECKIN_CODE_LENGTH);
   const eventRef = doc(eventsCollectionRef());
   const memberRef = membershipDocRef(hostUid);
+  const hostRosterRef = eventMemberDocRef(eventRef.id, hostUid);
 
   await runTransaction(db, async (tx) => {
     const existingMembership = await tx.get(memberRef);
@@ -125,6 +147,15 @@ export async function createEventWithHost(hostUid: string, input: CreateEventInp
       joinedAt: serverTimestamp(),
       checkedInAt: null,
     });
+
+    tx.set(hostRosterRef, {
+      role: 'host' satisfies EventMembershipRole,
+      memberStatus: 'joined' satisfies EventMemberStatus,
+      joinedAt: serverTimestamp(),
+      checkedInAt: null,
+      removedAt: null,
+      removedByHostId: null,
+    });
   });
 
   return eventRef.id;
@@ -140,6 +171,7 @@ export async function joinEventByInviteCode(uid: string, inputCode: string): Pro
   const eventRef = found.docs[0].ref;
   const eventId = eventRef.id;
   const memberRef = membershipDocRef(uid);
+  const rosterRef = eventMemberDocRef(eventId, uid);
 
   await runTransaction(db, async (tx) => {
     const eventSnap = await tx.get(eventRef);
@@ -162,6 +194,15 @@ export async function joinEventByInviteCode(uid: string, inputCode: string): Pro
       status: 'joined' satisfies EventMembershipStatus,
       joinedAt: serverTimestamp(),
       checkedInAt: null,
+    });
+
+    tx.set(rosterRef, {
+      role: 'participant' satisfies EventMembershipRole,
+      memberStatus: 'joined' satisfies EventMemberStatus,
+      joinedAt: serverTimestamp(),
+      checkedInAt: null,
+      removedAt: null,
+      removedByHostId: null,
     });
   });
 
@@ -205,11 +246,13 @@ export async function checkInToActiveEvent(uid: string, inputCode: string): Prom
   if (!checkInCode) throw new Error('Enter the check-in code from the event QR.');
 
   const memberRef = membershipDocRef(uid);
+
   await runTransaction(db, async (tx) => {
     const membershipSnap = await tx.get(memberRef);
     if (!membershipSnap.exists()) throw new Error('Join an event first.');
     const membership = membershipSnap.data();
     const eventId = membership.eventId as string;
+    const roster = eventMemberDocRef(eventId, uid);
     const eventRef = eventDocRef(eventId);
     const eventSnap = await tx.get(eventRef);
     if (!eventSnap.exists()) throw new Error('Event not found.');
@@ -217,6 +260,10 @@ export async function checkInToActiveEvent(uid: string, inputCode: string): Prom
     if (event.checkInCode !== checkInCode) throw new Error('Incorrect check-in code.');
     tx.update(memberRef, {
       status: 'checked_in' satisfies EventMembershipStatus,
+      checkedInAt: serverTimestamp(),
+    });
+    tx.update(roster, {
+      memberStatus: 'checked_in' satisfies EventMemberStatus,
       checkedInAt: serverTimestamp(),
     });
   });
@@ -232,6 +279,103 @@ export async function setActiveEventMode(hostUid: string, eventId: string, mode:
     activeMode: mode,
     updatedAt: serverTimestamp(),
   });
+}
+
+export async function endEvent(hostUid: string, eventId: string): Promise<void> {
+  const eventRef = eventDocRef(eventId);
+  const snap = await getDoc(eventRef);
+  if (!snap.exists()) throw new Error('Event not found.');
+  const event = snap.data() as Partial<Event>;
+  if (event.hostId !== hostUid) throw new Error('Only the host can end the event.');
+  await updateDoc(eventRef, {
+    status: 'ended' satisfies EventStatus,
+    activeMode: null,
+    updatedAt: serverTimestamp(),
+  });
+}
+
+export async function removeParticipantFromEvent(
+  hostUid: string,
+  eventId: string,
+  participantUid: string
+): Promise<void> {
+  if (hostUid === participantUid) throw new Error('You cannot remove yourself.');
+  const eventRef = eventDocRef(eventId);
+  const rosterRef = eventMemberDocRef(eventId, participantUid);
+  const participantMembershipRef = membershipDocRef(participantUid);
+
+  await runTransaction(db, async (tx) => {
+    const eventSnap = await tx.get(eventRef);
+    if (!eventSnap.exists()) throw new Error('Event not found.');
+    const ev = eventSnap.data() as Partial<Event>;
+    if (ev.hostId !== hostUid) throw new Error('Only the host can remove participants.');
+    if (ev.status === 'ended') throw new Error('This event has ended.');
+
+    const rosterSnap = await tx.get(rosterRef);
+    if (!rosterSnap.exists()) throw new Error('Participant not found in roster.');
+    const roster = rosterSnap.data() as { role?: string };
+    if (roster.role === 'host') throw new Error('Cannot remove the host.');
+
+    tx.update(rosterRef, {
+      memberStatus: 'removed' satisfies EventMemberStatus,
+      removedAt: serverTimestamp(),
+      removedByHostId: hostUid,
+    });
+
+    const memSnap = await tx.get(participantMembershipRef);
+    if (memSnap.exists() && memSnap.data().eventId === eventId) {
+      tx.delete(participantMembershipRef);
+    }
+  });
+}
+
+export async function listEventMembersForHost(hostUid: string, eventId: string): Promise<EventMemberRow[]> {
+  const event = await getEvent(eventId);
+  if (!event) throw new Error('Event not found.');
+  if (event.hostId !== hostUid) throw new Error('Only the host can view the roster.');
+
+  const snap = await getDocs(eventMembersCollectionRef(eventId));
+  return snap.docs.map((d) => {
+    const data = d.data();
+    return {
+      uid: d.id,
+      role: (data.role as EventMembershipRole) ?? 'participant',
+      memberStatus: (data.memberStatus as EventMemberStatus) ?? 'joined',
+      joinedAt: data.joinedAt ?? null,
+      checkedInAt: data.checkedInAt ?? null,
+      removedAt: data.removedAt ?? null,
+      removedByHostId: data.removedByHostId ?? null,
+    };
+  });
+}
+
+export async function listHostEndedEvents(hostUid: string): Promise<Array<Event & { id: string }>> {
+  const snap = await getDocs(query(eventsCollectionRef(), where('hostId', '==', hostUid)));
+  const out: Array<Event & { id: string }> = [];
+  snap.docs.forEach((d) => {
+    const data = d.data();
+    const status = data.status as EventStatus;
+    if (status !== 'ended') return;
+    out.push({
+      id: d.id,
+      title: data.title ?? '',
+      shortBlurb: data.shortBlurb ?? '',
+      venueHint: data.venueHint ?? '',
+      hostId: data.hostId ?? '',
+      inviteCode: data.inviteCode ?? '',
+      checkInCode: data.checkInCode ?? '',
+      status,
+      activeMode: data.activeMode ?? null,
+      createdAt: data.createdAt ?? null,
+      updatedAt: data.updatedAt ?? null,
+    });
+  });
+  out.sort((a, b) => {
+    const ta = a.updatedAt?.toMillis?.() ?? 0;
+    const tb = b.updatedAt?.toMillis?.() ?? 0;
+    return tb - ta;
+  });
+  return out;
 }
 
 export async function leaveActiveEvent(uid: string): Promise<void> {
