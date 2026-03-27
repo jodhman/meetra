@@ -120,6 +120,8 @@ After QR or shared activity, e.g.:
 
 During a game, show **only what helps that activity** (e.g. “Find someone who…” → highlight relevant traits, show hints). **The profile adapts to the active mode.**
 
+For **Mystery Match** specifically, game hints should be sourced mainly from this Social layer (hooks, vibe, interests, social-energy cues) so clues facilitate conversation without prematurely exposing identity.
+
 ### 7. Light personal signals (minimal)
 
 Still needed, but **lightweight** during event:
@@ -232,6 +234,18 @@ Still useful for backend/schema thinking:
 - Superficial **ranking** before the event  
 - During-event **info dumps** or **LinkedIn energy**  
 - Anything that makes the event feel like “swipe night”  
+- Any hint strategy that turns games into exact person-tracking or demographic spotting
+
+---
+
+## Onboarding relationship
+
+Progressive profile depends on a two-level onboarding model:
+
+- **General onboarding (persistent):** Fills durable profile foundations used across Lite/Social/Full.
+- **Event onboarding (optional):** Adds tonight/mode-specific context (mood, intent, participation toggles, clue preferences) when needed.
+
+For Mystery Match, most clue material should come from general onboarding + existing Social fields; event onboarding should stay short and only tune tonight’s assignment/clue behavior.
 
 ---
 

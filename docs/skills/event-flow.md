@@ -11,6 +11,8 @@ Meetra supports a first MVP event system focused on **one active event per user*
 - Hosts control flow with **active mode** (rotations, icebreakers, quiz, challenges), **end event**, and **remove guest** (soft-remove; history kept).
 - Hosts see **live metrics**, **guest list**, **check-in QR** for printing/venue, and **past event roster** (ended events, includes removed guests).
 
+> Note: current mode labels are legacy MVP placeholders. Product direction now defines **Mystery Match** as the first concrete V1 mode, with additional modes to follow.
+
 ## Data model
 
 ### `events/{eventId}`
@@ -20,7 +22,7 @@ Meetra supports a first MVP event system focused on **one active event per user*
 - `inviteCode` (join)
 - `checkInCode` (arrival/presence signal)
 - `status` (`draft` | `live` | `ended`)
-- `activeMode` (`rotations` | `icebreakers` | `quiz` | `challenges` | `null`)
+- `activeMode` (`rotations` | `icebreakers` | `quiz` | `challenges` | `null`) in current MVP schema; target product direction will introduce mode identifiers such as `mystery_match` when implemented
 - `createdAt`, `updatedAt`
 
 ### `eventMemberships/{uid}`
@@ -59,6 +61,13 @@ URL builders: `src/lib/linking/meetra-urls.ts` (`buildInviteJoinUrl`, `buildChec
 - Host (live): full details, share invite link, check-in QR, metrics, guest list (remove), modes, end event.
 - Host (ended): “Event ended” + **Past events** list → **Event detail** roster (includes removed).
 - No in-app chat during event; chat remains post-event + mutual match only (policy).
+
+## Next-state direction (not fully implemented yet)
+
+- **First concrete V1 mode:** `mystery_match` (guided discovery with progressive hints, soft proximity cues, and delayed reveal).
+- **Onboarding model:** persistent **general onboarding** + optional **event onboarding** triggered by host config/selected modes.
+- **Participation controls:** Mystery Match includes explicit before/after-reveal opt-out (`stop/skip/leave round/pause discoverability`) as a core safety and dignity requirement.
+- **Matching contract unchanged:** Mystery Match can elevate a soft-match candidate into post-event recap/like flow, but confirmed match still requires mutual like after event end.
 
 ## Key files
 

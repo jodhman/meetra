@@ -1,6 +1,6 @@
 # Meetra – App overview
 
-Event-based dating platform: users **Meet → Interact → Then Match** at singles events rather than swiping. Meetra targets both **dedicated singles/dating-event organisers** and **regular event organisers** who want to augment their event with a **dating layer**. The app offers **modes** for different event types. **V1:** three example event types (TBD) covering both categories as first modes. Monetization is **organiser-first**, aligning incentives with real event outcomes (not user churn) — we position Meetra as the “angels coming to save the dating world” via incentives. Full product concept is in [.cursor/rules/core-product-concept.mdc](../.cursor/rules/core-product-concept.mdc). Detailed vision (QR, leaderboards, rewards, soft matchmaking) is in [BLUEPRINT.md](BLUEPRINT.md). **Progressive profile** (Lite / Social / Full; during-event = **conversation engine**): [skills/progressive-profile.md](skills/progressive-profile.md).
+Event-based dating platform: users **Meet → Interact → Then Match** at singles events rather than swiping. Meetra targets both **dedicated singles/dating-event organisers** and **regular event organisers** who want to augment their event with a **dating layer**. The app offers **modes** for different event types. **V1 direction:** three example event types/modes across those categories, with the first concrete mode defined as **Mystery Match** (guided discovery, not deterministic “perfect match” AI). Monetization is **organiser-first**, aligning incentives with real event outcomes (not user churn) — we position Meetra as the “angels coming to save the dating world” via incentives. Full product concept is in [.cursor/rules/core-product-concept.mdc](../.cursor/rules/core-product-concept.mdc). Detailed vision (QR, leaderboards, rewards, soft matchmaking, Mystery Match) is in [BLUEPRINT.md](BLUEPRINT.md). **Progressive profile** (Lite / Social / Full; during-event = **conversation engine**): [skills/progressive-profile.md](skills/progressive-profile.md). Onboarding model: [skills/onboarding-model.md](skills/onboarding-model.md). Mystery Match spec: [skills/mystery-match.md](skills/mystery-match.md).
 
 **Stack:** Expo (React Native), TypeScript, Firebase (Auth, Firestore, Storage), TanStack Query.
 
@@ -14,9 +14,16 @@ Event-based dating platform: users **Meet → Interact → Then Match** at singl
 
 ## Product phases (vision)
 
-- **Pre-event:** Profile, join event (invite code/link), onboarding → *partially implemented (auth, profile).*
-- **During event:** Host-run activities, timers, pairings, no in-app chat; **UI and navigation stay stripped down** to what supports that phase (not a full generic app shell) → *not yet implemented.*
+- **Pre-event:** Profile, join event (invite code/link), **general onboarding** (persistent) + optional **event onboarding** (contextual/mode-based) → *partially implemented (auth, profile; onboarding model not fully implemented).*
+- **During event:** Host-run activities, timers, pairings, no in-app chat; **UI and navigation stay stripped down** to what supports that phase (not a full generic app shell). First target mode: **Mystery Match** with progressive hints + soft proximity + delayed reveal → *not yet implemented.*
 - **Post-event:** View attendees, like/match, unlock chat → *not yet implemented.*
+
+## Product direction clarifications
+
+- **Mystery Match is a during-event layer, not final matching:** It assigns one **promising connection** for playful in-room discovery; final **match** remains mutual-like after the event.
+- **Soft matchmaking language:** Keep wording suggestive (`promising connection`, `likely fit`, `strong conversation fit`), not deterministic (`perfect match`, `soulmate`).
+- **Onboarding model:** Data generally true across events belongs in **general onboarding**; tonight/mode-specific context belongs in optional **event onboarding**.
+- **Exit hatch requirement:** Mystery Match includes a private, low-friction opt-out path before or after reveal (`skip/stop/leave/pause discoverability`) so users can disengage without social penalty.
 
 ## Main flows (current)
 

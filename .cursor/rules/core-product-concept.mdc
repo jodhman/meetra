@@ -19,11 +19,14 @@ Users prepare by:
 
 - Creating a personal dating profile (**Lite layer** — see progressive profile: intrigue + safety, not full swipe-style disclosure)
 - Joining an event via an invite code or link
-- Onboarding that further strengthens the dating profile
+- Completing **general onboarding** (persistent profile + compatibility + conversation foundations reused across events)
+- Completing optional **event onboarding** when required by host configuration or selected game mode(s)
 
 **Goal:** Light context before meeting, without replacing real interaction.
 
 **Progressive profile visibility:** Not one profile everywhere — a **layered profile** by phase. **Before:** reduce anxiety / curiosity (Lite). **During:** the profile is a **conversation engine** (talk hooks, vibe state, intent, auto icebreakers, interaction + game layers) — not Tinder-with-events or LinkedIn bios. **After:** Full profile for decision + recap. Aligns with UX progressive disclosure and safety. Full spec: [docs/skills/progressive-profile.md](docs/skills/progressive-profile.md).
+
+**Onboarding model (core):** Meetra uses two onboarding layers. **General onboarding** is persistent and reusable across events (identity basics, interests, conversation hooks, interaction style, broad connection preferences). **Event onboarding** is optional, short, and contextual (tonight’s mood/intent, mode participation, host-specific prompts/consents). Rule: if information is usually true across events, store it in general onboarding; if it is event/mode-specific for tonight, collect it in event onboarding.
 
 ### 2. During Event
 
@@ -39,6 +42,10 @@ The app guides **real-world interaction** through structured activities controll
 **Host capabilities:** Organisers run the event through **modes** suited to the event type — e.g. timed 1-on-1 rotations, group icebreakers, compatibility quizzes, social challenges. Different events need different flows; Meetra should offer **multiple modes** so organisers can match the format to their crowd and venue.
 
 **App provides:** Instructions, timers, pairings/group assignments, conversation prompts.
+
+**First concrete V1 mode: Mystery Match.** Each participant can opt into a playful discovery loop where Meetra assigns one **AI-selected promising connection** (not a soulmate claim, not deterministic matchmaking). Attendees receive progressive, conversation-first hints and soft proximity cues, mingle broadly, and attempt an in-person identify + meet flow before a delayed reveal. The mode is designed to reduce approach anxiety while preserving ambiguity and safety. It strengthens the post-event soft match / like path and does **not** bypass mutual-like matching rules.
+
+**Exit hatch (core safety requirement):** Mystery Match includes an explicit private opt-out path so attendees can stop participating in their current assigned connection **at any point**, before or after reveal, without explaining themselves. Exiting should be low-friction, non-punitive, and not framed as a public rejection moment.
 
 **QR codes (core):** QR is vital for maximizing interactions — for games, for connecting, and for tracking. Scanning QRs acts as **checkpoints** while users navigate the dating landscape. Collecting QRs is encouraged; they reward digitally (e.g. more post-event likes per scan, prestige on profile) and power leaderboards (“top candidate”, “top …”). Many challenges/games use QR somehow. See [docs/BLUEPRINT.md](docs/BLUEPRINT.md) for details.
 
@@ -90,7 +97,7 @@ A **soft matchmaking** layer targets more specific groups, niches, or strong pre
 
 **Event modes:** Meetra offers **various modes** (presets or configurable flows) so different event types get the right structure — pace, group size, game mix, QR emphasis, leaderboard style. One size does not fit all.
 
-**Initial focus (V1):** Ship around **three example event types** as concrete reference implementations (**which three — TBD**). Each example maps to a primary mode and helps validate the platform before expanding the catalogue.
+**Initial focus (V1):** Ship around **three example event types** as concrete reference implementations. The **first defined mode is Mystery Match** (guided discovery for open-floor mingling). Remaining example events/modes are still to be finalised.
 
 ---
 
@@ -98,4 +105,4 @@ A **soft matchmaking** layer targets more specific groups, niches, or strong pre
 
 **Meet → Interact → Then Match**
 
-The product serves **event organisers** (both singles/dating-event organisers and regular organisers adding a dating layer) with **modes** for different event types; **initially three example event types** (TBD). **QR codes** are core (checkpoints, games, stats, leaderboards, rewards). **Soft matchmaking** targets niches and preferences. **Progressive profile visibility** (Lite / Social / Full; **during-event = conversation engine**, not Tinder-with-events) supports UX, safety, and “meet first.” **While an event is live, flows and UI stay stripped down** to phase-relevant surfaces (minimal chrome, not a full generic app). Blueprint: [docs/BLUEPRINT.md](docs/BLUEPRINT.md). Profile layers: [docs/skills/progressive-profile.md](docs/skills/progressive-profile.md).
+The product serves **event organisers** (both singles/dating-event organisers and regular organisers adding a dating layer) with **modes** for different event types; the first concrete V1 mode is **Mystery Match**, with additional example events/modes to follow. **QR codes** are core (checkpoints, games, stats, leaderboards, rewards). **Soft matchmaking** targets niches and preferences without deterministic “perfect match” claims. **Progressive profile visibility** (Lite / Social / Full; **during-event = conversation engine**, not Tinder-with-events) supports UX, safety, and “meet first.” **While an event is live, flows and UI stay stripped down** to phase-relevant surfaces (minimal chrome, not a full generic app). Onboarding uses a persistent **general layer** plus optional **event layer**. Blueprint: [docs/BLUEPRINT.md](docs/BLUEPRINT.md). Profile layers: [docs/skills/progressive-profile.md](docs/skills/progressive-profile.md).
