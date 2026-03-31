@@ -153,7 +153,9 @@ Rule: Soft matchmaking **supplements** the event-based flow; it does not replace
 
 **Relationship to Mystery Match:** Spark **does not replace** Mystery Match. Spark **proves** the **interaction foundation**; Mystery **delivers** flagship **differentiated** game value **on top** of that foundation.
 
-**Core loop (product-level):** **receive prompt → talk → continue or mark progress → next prompt or nudge** (implementation open; **no** required QR for validation).
+**Core loop (product-level):** **receive prompt → act in person → feedback (e.g. did it / skip)** → **adaptive next prompt** — **state-driven**, not a random feed. **No** required QR for validation.
+
+**Extended definition:** prompt **taxonomy**, **phase mix** (arrival / warm-up / flow / recovery), **named soft-anchors**, **pre-prompt layer**, **ambient awareness** (non-browsing), **soft progression** — [skills/spark-prompts.md](skills/spark-prompts.md).
 
 ### Mystery Match (V1 flagship differentiated mode)
 

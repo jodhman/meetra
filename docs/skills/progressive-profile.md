@@ -138,7 +138,7 @@ During a game, show **only what helps that activity** (e.g. “Find someone who�
 
 #### Spark Prompts and the Social layer
 
-For **Spark Prompts**, the Social layer supplies **prompt-relevant** signals — hooks, vibe, tonight intent, light tags — so the app can issue **contextual, socially useful prompts** without profile browsing. **Interaction-first**: the mode needs enough surface to **start conversations**, not to evaluate people from a distance. See [spark-prompts.md](./spark-prompts.md).
+For **Spark Prompts**, the Social layer supplies **prompt-relevant** signals — hooks, vibe, tonight intent, light tags, first name for **named soft-anchor** prompts (within product rules) — feeding a **state-driven** prompt engine (phase mix, feedback loop), not a browse surface. **Interaction-first**: enough to **start and deepen** talk, not to evaluate from a distance. See [spark-prompts.md](./spark-prompts.md).
 
 #### Mystery Match V1 and the Social layer
 

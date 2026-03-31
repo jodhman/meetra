@@ -2,76 +2,252 @@
 
 **Working name** — product naming may evolve; docs use **Spark Prompts** as the placeholder.
 
-**Canonical product spec for Meetra’s first validation mode.** Strategy context: [PRODUCT-CONCEPT.md](../PRODUCT-CONCEPT.md), [BLUEPRINT.md](../BLUEPRINT.md).
+**Canonical product spec for Meetra’s first validation mode.** Spark Prompts is a **state-driven interaction system**, not a loose “prompt of the day” — prompts adapt to **user and event state**, **feedback**, and **progression**. Strategy context: [PRODUCT-CONCEPT.md](../PRODUCT-CONCEPT.md), [BLUEPRINT.md](../BLUEPRINT.md).
+
+---
+
+## First validation question
+
+> Can Meetra meaningfully improve real-world conversations at minimal friction?
+
+**Spark Prompts validates the interaction foundation.** [Mystery Match](./mystery-match.md) builds **differentiated, game-like value** on top of that foundation.
 
 ---
 
 ## Definition
 
-**Spark Prompts** is a **prompt-driven live interaction mode**: during an event, Meetra surfaces **contextual, socially useful prompts** that help people **start or deepen real conversations** in the room. It is **not** a hidden-target game, **not** profile browsing, and **not** a lightweight gimmick — it is the **deliberate first test** of whether Meetra can **materially improve in-person interaction** with **minimal friction**.
+**Spark Prompts** is Meetra’s **state-driven behavioral system for real-world interaction**: during an event, the app issues **contextual prompts** that drive **approach, movement, and depth** in the room. It draws on **social handle** plus **lightweight tonight context** (Social layer + event onboarding). In **mixed-adoption** venues it stays **robust** without QR rails, assignment engines, or universal participation.
 
-The mode draws on **social handle** (photo, first name, one expressive line) plus **lightweight tonight context** — vibe, intent, simple labels, hooks — from the **during-event Social layer** and **event onboarding**. That is enough signal to make prompts **specific and social** without requiring a completed dating profile.
-
-In **mixed-adoption** venues (many guests not on the app), Spark Prompts stays **robust**: it does not depend on universal participation, dense checkpoints, QR fluency, or assignment graph complexity. Heavier mechanics (QR-led stats, **Mystery Match**–style narrowing games) ask more of users and infrastructure; **Spark Prompts validates the interaction thesis first**, then those modes **layer on** — **Mystery Match** is **complemented**, not superseded: it remains the **flagship differentiated** mode built on a **proven interaction foundation**.
+**Outcome framing:** Spark evolves from “a prompt feature” → **a real-time social interaction engine** — the **foundation** on which modes like **Mystery Match** layer.
 
 ---
 
-## Role in V1 strategy
+## Core principle (non-negotiable)
 
-Spark Prompts is the **first validation mode**: it tests the most fundamental question:
+Prompts are **behavioral triggers**, not content.
 
-> Can Meetra meaningfully improve real-world conversations at live events with minimal friction?
+Each prompt must:
 
-**Spark Prompts validates the interaction foundation.** [Mystery Match](./mystery-match.md) builds **differentiated, game-like value** on top of that foundation once the core thesis is proven.
+- **Lower approach friction**
+- **Provide language to speak**
+- **Create movement** in the room
 
----
-
-## What it does (concretely)
-
-The app gives users prompts that **lower the cost of approaching someone** and **give language for real talk** — e.g. directions like “talk to someone who picked curious tonight,” “ask what they can talk about for hours,” “find someone who came open-minded.” The goal is to make the **room easier to enter** and **conversation easier to start** — **interaction-first**, not browsing-first.
+If a prompt does not influence **real-world behavior**, it should not exist.
 
 ---
 
-## Core loop (intentionally open)
+## Prompt taxonomy (five types)
 
-A simple rhythm such as:
+### 1. Icebreaker prompts (entry)
 
-- receive a prompt  
-- talk to someone  
-- continue or mark progress  
-- receive another prompt or light social nudge  
+**Purpose:** Enable immediate conversation.
 
-Exact UX and confirmation mechanics stay **product-defined**; this mode does **not** require QR or a single verification mechanic to validate the core thesis.
+- Broad, low-effort, minimal cognitive load
+- **Dominant early** in the event
+
+Examples: “Ask someone what they could talk about for hours”; “Find someone who hates mornings.”
+
+### 2. Directional prompts (movement)
+
+**Purpose:** Prevent stagnation and improve **circulation**.
+
+- Behavior-driven, not content trivia
+
+Examples: “Talk to someone you haven’t met yet”; “Find someone standing alone and say hi.”
+
+### 3. Deepening prompts (quality)
+
+**Purpose:** Increase **conversation depth** — typically **after** initial contact.
+
+Examples: “What’s something you’ve changed your mind about recently?”; “What’s a risk that paid off for you?”
+
+### 4. Named prompts (soft anchoring)
+
+**Purpose:** Reduce friction **selectively** using **first name only** — **soft anchors**, not hunt targets.
+
+**Rules:**
+
+- **~Max 20%** of prompts (product tuning)
+- **Only one** active named prompt at a time
+- **First name only** — no physical or location identifiers
+- Never framed as a **command** (“go find Emma”)
+
+Examples: “There’s a *Maja* here who loves chaotic stories”; “If you run into *Erik*, ask him what he’s obsessed with.”
+
+**Anti-patterns:** Multiple named targets; precise identification; stalker energy.
+
+### 5. Momentum prompts (recovery)
+
+**Purpose:** Re-engage **stuck** users.
+
+**Triggered by** (product signals): inactivity, repeated very short interactions, hesitation patterns.
+
+Examples: “Reset: ask someone the simplest question you can think of”; “Try a completely different type of person next.”
+
+---
+
+## State-driven prompt system
+
+Prompts are **not random** — they adapt to **phase** and **user state**. Percentages below are **strategic targets** (implementation may smooth or blend).
+
+### State A — Arrival (~0–10 min)
+
+| Mix | Goal |
+|-----|------|
+| ~70% Icebreaker, ~20% Directional, ~10% Named | **First interaction quickly** |
+
+### State B — Warm-up (~10–30 min)
+
+| Mix | Goal |
+|-----|------|
+| ~40% Icebreaker, ~30% Directional, ~20% Deepening, ~10% Named | **Build rhythm** |
+
+### State C — Flow (~30+ min)
+
+| Mix | Goal |
+|-----|------|
+| ~50% Deepening, ~20% Directional, ~20% Named, ~10% Momentum | **Quality + serendipity** |
+
+### State D — Stuck / drop-off
+
+| Mix | Goal |
+|-----|------|
+| ~60% Momentum, ~30% Icebreaker, ~10% Named | **Behavioral reset** |
+
+---
+
+## Named prompts (detailed)
+
+**When names appear**
+
+- **Early** — sparingly, to reduce initial friction (within Named cap)
+- **After 2–3 interactions** — can surface as **progression** (still soft)
+
+**Framing styles**
+
+- Soft curiosity: “There’s a Sara here who…”
+- Conditional: “If you run into Jonas…”
+- Suggestive: “You might enjoy talking to Emma”
+
+**Core rule:** Names are **soft anchors**, not **targets** — never precision hunt language.
+
+---
+
+## Prompt construction
+
+Product-level structure:
+
+**[Framing] + [Action] + [Target] + [Hook]**
+
+Example: “Quick one → ask someone what they could talk about for hours.”
+
+---
+
+## Pre-prompt layer (optional UX)
+
+A **subtle** layer (e.g. simulated internal dialogue) **before** the main prompt.
+
+**Purpose:** Normalize hesitation, model conversational starters, reduce approach anxiety.
+
+**Examples (tone):** “umm… how do I start this”; “ok just say it”; “this might be random but…”
+
+**Behavior:** Low prominence (e.g. background, low opacity); typing / deleting animation acceptable; **must not compete** with the primary prompt. **Future:** May adapt to shy vs confident signals.
+
+---
+
+## Feedback loop (essential)
+
+**User inputs (examples):** “Did it” · “Skip” · passive timeout / no action.
+
+**System response (directional):**
+
+- After **Did it:** subtle positive feedback + **adaptive** next prompt
+- After **Skip:** **easier** or more **directional** prompt (reduce friction)
+
+**Purpose:** Maintain **momentum** without heavy gamification (no points/leaderboards in this mode).
+
+---
+
+## Ambient awareness layer (non-browsing)
+
+**Allowed (examples):** “12 people are active”; “Some nearby are open to chatting”; “People picked ‘deep talks’ tonight.”
+
+**Not allowed:** User lists, profile browsing, maps, precise tracking.
+
+**Principle:** **Directional awareness**, not **informational browsing**.
+
+---
+
+## Progression (soft)
+
+**Signals (examples):** “You’ve talked to 3 people”; “You’ve tried 2 prompts.”
+
+**Unlocks (examples):** Named prompts, deeper prompts, slight personalization — **light**, not a full meta-game.
+
+**Constraint:** No heavy gamification here (no points, no Spark leaderboards).
+
+---
+
+## UX structure (directional)
+
+| Zone | Role |
+|------|------|
+| **Top** | Pre-prompt animation (subtle, if used) |
+| **Center** | **Main prompt** (primary focus) |
+| **Bottom** | Actions — e.g. **Did it** / **Skip** |
+| **Background** | Minimal, calm, non-distracting |
+
+---
+
+## Behavioral model
+
+Spark Prompts should feel like:
+
+> “I don’t have to think — I just act.”
+
+**Not:** a content feed · a user browser · a generic game shell.
+
+**Yes:** a **real-time social interaction engine** — **interaction-first** always.
+
+---
+
+## Critical constraints
+
+- No user **browsing** or directories
+- No **precise targeting**, including with names (soft anchor only)
+- **Interaction-first** always; **minimal cognitive load**
+- Must work under **mixed-adoption** conditions
+- **No heavy gamification** in Spark itself (save stats/rewards for later infrastructure)
 
 ---
 
 ## Why it is the strongest first validation mode
 
-- **Isolates the thesis** — tests whether app-supported **live conversation** improves, not whether a particular **checkpoint or game** is polished.  
-- **Lower cognitive load** — easier to explain in a noisy room than richer game modes.  
-- **Mixed-adoption friendly** — does not require everyone present to play or scan; works when only a **subset** uses Meetra.  
-- **Infrastructure-light** — does not depend on QR rails, leaderboards, or assignment engines to prove value.  
-- **Foundation for what follows** — once conversation lift is credible, **Mystery Match** and **QR-driven** layers add **depth**, not confusion, to the same **interaction-first** core.
+- **Isolates the thesis** — conversation lift, not checkpoint polish  
+- **Lower cognitive load** in noisy rooms  
+- **Mixed-adoption friendly**  
+- **Infrastructure-light** — no QR required to validate core value  
+- **Foundation for Mystery Match and QR layers** — same interaction-first core  
 
 ---
 
 ## Social handle + tonight context
 
-Spark Prompts is **especially compatible** with **social handle first**: very little persistent depth is needed to generate **useful, social prompts** — hooks, vibe, tonight labels, light intent. **Event onboarding** supplies **tonight-only** tuning without bloating the permanent profile.
+Spark aligns with **social handle first**: hooks, vibe, tonight labels, light intent — enough to personalize **without** full profile depth. **Event onboarding** tunes **tonight-only** signals.
 
 ---
 
 ## Complement to Mystery Match
 
-- **Spark Prompts** → prove **“does Meetra help people talk?”**  
-- **Mystery Match** → prove **“can we deliver flagship, differentiated game value?”** on top of that **validated layer**.
+- **Spark Prompts** → prove **“does Meetra help people talk?”** via a **state-driven prompt engine**  
+- **Mystery Match** → flagship **differentiated** mode on a **validated** interaction layer  
 
-They serve **different** validation and product jobs; both remain **central** to V1 **definition** and long-term identity.
+Both stay **central** to product identity; Spark is **sequenced first** for validation clarity, not importance ranking.
 
 ---
 
 ## Related docs
 
-- [Progressive profile visibility](./progressive-profile.md) — Social layer as prompt + conversation fuel  
+- [Progressive profile visibility](./progressive-profile.md) — Social layer as prompt fuel  
 - [Onboarding model](./onboarding-model.md) — minimal event-mode inputs  
-- [Mystery Match](./mystery-match.md) — flagship mode layered after validated interaction  
+- [Mystery Match](./mystery-match.md) — flagship mode on top of this foundation  

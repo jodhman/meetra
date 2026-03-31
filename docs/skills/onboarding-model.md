@@ -88,7 +88,7 @@ General onboarding provides the durable substrate; event onboarding provides tem
 - **Tonight signals** — mood, energy, simple labels (e.g. curious, open-minded) via **event onboarding** or quick in-event picks.
 - Optional progressive fields (tags, hooks) only as they improve prompt quality — **not** gating first participation.
 
-The **first event-mode layer** can operate without deep profile completion; it powers **prompt-driven interaction**, not browsing. See [spark-prompts.md](./spark-prompts.md).
+The **first event-mode layer** can operate without deep profile completion; it powers **Spark Prompts** as a **state-driven behavioral system** (prompt types, timing, feedback — not a flat prompt list). See [spark-prompts.md](./spark-prompts.md).
 
 ---
 
