@@ -6,6 +6,22 @@ Aligned with event-networking products: pre-, during-, and post-event engagement
 
 ---
 
+## V1 mantra: social handle first
+
+**Social handle first. Profile later. Interaction always.**
+
+Meetra V1 locks a **minimum persistent identity layer** — a **social handle**:
+
+- **One photo**
+- **First name**
+- **One expressive line** (a single hook or standout line that helps others start talking — not a swipe-style profile)
+
+That trio is enough to **join an event**, be **discoverable** (where the product allows), and **take part in live interaction modes**. **Additional depth is progressive** and **must never be required for initial participation** (no “finish your profile before you can enter the room”).
+
+The **Lite** layer in this doc is the first *presentation* of that handle plus optional light garnish (tags, intention); the **product floor** remains photo + name + one line.
+
+---
+
 ## If you get the profile wrong vs right
 
 **Wrong → the app becomes:**
@@ -58,7 +74,7 @@ During the event there is **no in-app chat/messages**; the profile acts as an in
 
 **Replace static info with actionable info** — instead of leading with job, long bio, or generic interests alone, prioritize hooks, vibe, intent, and app-generated openers.
 
-**App chrome matches the phase:** During an **active** event, Meetra should feel **stripped down** overall — not only the profile card, but **navigation and screens** should emphasize only what serves that phase (host instructions, timers, QR, pairings, conversation surfaces). Pre-event and post-event tools (full profile editing, broad exploration, etc.) should not compete for attention while the event is live.
+**App chrome matches the phase:** During an **active** event, Meetra should feel **stripped down** overall — not only the profile card, but **navigation and screens** should emphasize only what serves that phase (host instructions, timers, prompts, pairings, conversation surfaces, checkpoints when the product uses them). Pre-event and post-event tools (full profile editing, broad exploration, etc.) should not compete for attention while the event is live.
 
 ---
 
@@ -120,7 +136,15 @@ After QR or shared activity, e.g.:
 
 During a game, show **only what helps that activity** (e.g. “Find someone who…” → highlight relevant traits, show hints). **The profile adapts to the active mode.**
 
-For **Mystery Match** specifically, game hints should be sourced mainly from this Social layer (hooks, vibe, interests, social-energy cues) so clues facilitate conversation without prematurely exposing identity.
+#### Spark Prompts and the Social layer
+
+For **Spark Prompts**, the Social layer supplies **prompt-relevant** signals — hooks, vibe, tonight intent, light tags — so the app can issue **contextual, socially useful prompts** without profile browsing. **Interaction-first**: the mode needs enough surface to **start conversations**, not to evaluate people from a distance. See [spark-prompts.md](./spark-prompts.md).
+
+#### Mystery Match V1 and the Social layer
+
+For **Mystery Match V1**, the during-event surface is both a **conversation engine** and the main source of **guided narrowing clues**: **conversation-safe**, **slightly stronger** in V1 than the softest possible hints (tonight’s vibe, event intent, hooks, interaction style, social-energy), while still avoiding creepy identification. Play is scoped to the **active Meetra participant layer** — not the whole room. See [mystery-match.md](./mystery-match.md).
+
+The **same Social layer** supports **prompt-driven** modes (foundation) and **structured** modes (flagship differentiation) — different **mode logic** on shared **conversation-first** surfaces.
 
 ### 7. Light personal signals (minimal)
 
@@ -174,7 +198,7 @@ Remove anything that encourages **silent judging** before talking:
 
 | Stage | Focus | What to show |
 |-------|--------|----------------|
-| **Before** | Curiosity only | Photo, name, **1 hook**, **2 tags** — strip it down |
+| **Before** | Curiosity only | **Floor:** photo, first name, **1 expressive line**; optional: tags, intention — strip everything else |
 | **During** | Interaction-first | Full during-event structure above — **primary product focus** |
 | **After** | Decision mode | Full profile, bio, compatibility, **recap** — evaluate with real-world context |
 
@@ -186,13 +210,15 @@ Remove anything that encourages **silent judging** before talking:
 
 Same goals as above: **reduce anxiety**, **curiosity**, low-risk disclosure. No full pre-screening.
 
-**Typical Lite fields:** first name (+ optional initial), age or age range, **1 main photo**, **≤3 short tags**, **1 talk hook / prompt**, **event intention** badge (e.g. open to dating / meet people / see what happens), optional small badges (language, rough area — not exact address).
+**V1 floor (social handle):** **1 photo**, **first name**, **1 expressive line** — required only to the extent the product needs a visible identity for the event; nothing more is mandatory for first participation.
+
+**Typical Lite fields (progressive, on top of the floor):** age or age range, **≤3 short tags**, **event intention** badge (e.g. open to dating / meet people / see what happens), optional small badges (language, rough area — not exact address).
 
 **Hide:** full gallery, long bio, job/company, social links, deep filters.
 
 ### Social — during the event
 
-This doc’s **conversation engine** = the Social layer. Unlocks can still be tied to **QR / game cohort / milestones** where product policy requires.
+This doc’s **conversation engine** = the Social layer. It powers **prompt-driven** modes (e.g. Spark Prompts) and **structured** modes (e.g. Mystery Match). Unlocks can still be tied to **interaction checkpoints** (including **QR** where infrastructure exists), **game cohort**, or **milestones** where product policy requires.
 
 ### Full — after the event
 
@@ -217,7 +243,7 @@ Still useful for backend/schema thinking:
 
 | Phase | Visible (high level) | Hidden / deferred |
 |-------|------------------------|-------------------|
-| **Before** | Name, age, 1 photo, few tags, 1 hook, light intention | Full bio, job, gallery, deep prefs, social links |
+| **Before** | **Required:** first name, 1 photo, 1 expressive line; **optional:** age, few tags, light intention | Full bio, job, gallery, deep prefs, social links |
 | **During** | Talk hooks, vibe state, intent, icebreaker card, interaction + game layers, minimal identity | Full bio, job, height, dealbreakers, likes-as-judgment, social proof that enables silent ranking |
 | **After** | Full profile, compatibility, recap, like/match flow | Per privacy settings |
 
@@ -225,7 +251,7 @@ Still useful for backend/schema thinking:
 
 ## Visual direction
 
-**Not** Tinder or LinkedIn. **Card-based**, warm, **action-first** copy and layout — big talk hook, not dense résumé blocks.
+Meetra should **not** default to the look and feel of **other dating apps** — same-y card stacks, pink-gradient hero clichés, grid-of-faces browsing, or chat-first chrome that signals “another swipe product.” **Not** Tinder or LinkedIn. Aim for **distinct**, **event-appropriate** visuals: **card-based** where it helps, warm, **action-first** copy and layout — big talk hook, not dense résumé blocks — so the UI supports **in-person interaction**, not remote pre-judging.
 
 ---
 
@@ -234,6 +260,7 @@ Still useful for backend/schema thinking:
 - Superficial **ranking** before the event  
 - During-event **info dumps** or **LinkedIn energy**  
 - Anything that makes the event feel like “swipe night”  
+- Visual or interaction patterns that **mimic generic dating apps** without a reason tied to live events  
 - Any hint strategy that turns games into exact person-tracking or demographic spotting
 
 ---
@@ -245,13 +272,15 @@ Progressive profile depends on a two-level onboarding model:
 - **General onboarding (persistent):** Fills durable profile foundations used across Lite/Social/Full.
 - **Event onboarding (optional):** Adds tonight/mode-specific context (mood, intent, participation toggles, clue preferences) when needed.
 
-For Mystery Match, most clue material should come from general onboarding + existing Social fields; event onboarding should stay short and only tune tonight’s assignment/clue behavior.
+For **Spark Prompts**, prompt material should draw from the **Social layer** + **tonight context** with minimal depth — **social-handle-first** compatible ([spark-prompts.md](./spark-prompts.md)). For **Mystery Match V1**, clue material should come from the **Social layer** + **tonight/event context** + **clue-safe** persistent signals — not heavy pre-event profile depth. **Social handle** remains the entry primitive; event onboarding stays short and tunes participation, discoverability, and tonight’s behavior ([mystery-match.md](./mystery-match.md), [onboarding-model.md](./onboarding-model.md)).
 
 ---
 
 ## V1 profile spec (ship first)
 
-**Before:** Photo, name, **1 talk hook**, **2 tags**, light intention — curiosity only.
+**Before (floor):** One photo, first name, **one expressive line** — enough to join and participate; nothing else required for initial participation.
+
+**Before (typical Lite presentation):** Optional **2 tags** + light intention on top of the floor — curiosity only, still not a full profile.
 
 **During:** Prominent **talk hook(s)** + **vibe/status** + **event intent** + **one auto icebreaker** + **interaction status** when applicable + **game layer** when a game is active + **minimal** identity (1–2 photos, ≤3 tags). No full bio / job / height / dealbreakers on the during-event surface.
 

@@ -4,9 +4,11 @@ import { useMemo } from 'react';
 import { queryKeys } from '@/lib/query-keys';
 import {
   getProfile,
+  normalizeProfilePayload,
   setProfile,
   type DatingProfile,
 } from '@/lib/firestore/profiles';
+import { synthesizeVibe } from '@/lib/profile/vibe-synthesis';
 import { uploadProfilePhoto } from '@/lib/storage/profile-photos';
 
 export function useProfile(uid: string | undefined) {
@@ -57,5 +59,28 @@ export function useUploadProfilePhotoMutation(uid: string | undefined) {
   return useMutation({
     mutationFn: async ({ photoId, blob }: { photoId: string; blob: Blob }) =>
       uploadProfilePhoto(uid!, photoId, blob),
+  });
+}
+
+/** Generates vibe summary + standout hook from current profile facts; user can edit after. */
+export function useGenerateVibeMutation(uid: string | undefined) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (profile: DatingProfile) => {
+      const out = await synthesizeVibe(profile);
+      await setProfile(
+        uid!,
+        normalizeProfilePayload({
+          aiVibeSummary: out.aiVibeSummary,
+          aiStandoutHook: out.aiStandoutHook,
+          aiSuggestedAskMe: out.aiSuggestedAskMe,
+        })
+      );
+      return out;
+    },
+    onSuccess: () => {
+      if (uid) queryClient.invalidateQueries({ queryKey: queryKeys.profile(uid) });
+    },
   });
 }

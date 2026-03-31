@@ -7,6 +7,10 @@ Meetra uses a two-level onboarding model:
 
 This model supports the core philosophy: **Meet → Interact → Then Match**.
 
+**Canonical V1 framing:** **Social handle first. Profile later. Interaction always.** The **minimum** persistent identity is a **social handle**: **one photo**, **first name**, and **one expressive line**. That is enough to join an event, be discoverable (where enabled), and participate in live modes. **All other general-onboarding fields are progressive and must not gate initial participation.**
+
+**Implementation (app):** Compressed general onboarding ships as `src/app/(app)/profile/onboarding.tsx` (five steps) and persists to `profiles/{uid}`. Optional event onboarding state merges onto `events/{eventId}/members/{uid}` via `src/lib/firestore/event-onboarding.ts` (tonight/mode fields — modes consume this later). *Product direction:* converge implementation so completion/gating aligns with the social-handle floor above (today the app may still collect more before marking onboarding complete — see [profile-flow.md](./profile-flow.md)).
+
 ---
 
 ## 1) General onboarding (persistent foundation)
@@ -14,17 +18,22 @@ This model supports the core philosophy: **Meet → Interact → Then Match**.
 General onboarding collects durable information that stays useful across many events and modes.
 
 Purpose:
-- Build a reusable profile foundation
-- Power soft matchmaking and compatibility signals
+- Establish the **social handle** floor, then optionally deepen the reusable profile over time
+- Power soft matchmaking and compatibility signals (when users have added more)
 - Power during-event conversation design and hint generation
 - Support post-event decision-making without re-entering stable data each time
 
-Typical data:
-- Core identity basics (display name, age/date of birth, photos)
+**Minimum (V1 floor — must not be gated behind “full profile”):**
+- One photo
+- First name
+- One expressive line (conversation hook / standout line)
+
+Typical additional data (progressive, not required for first participation):
+- Core identity beyond the floor (e.g. age/date of birth, more photos)
 - Broad dating/connection preferences (gender/looking for, broad intent, age preference where relevant)
 - Interests and lifestyle signals
 - Vibe/personality/social energy signals
-- Conversation hooks (`ask me about…`, `I can talk forever about…`, `friends would say…`)
+- Additional conversation hooks beyond the one expressive line (`ask me about…`, `I can talk forever about…`, `friends would say…`)
 - Hint-safe attributes that can power game clues
 - Interaction style signals (introvert/ambivert/extrovert, playful vs deep, slow warm-up vs instant spark, one-on-one vs group energy)
 
@@ -71,20 +80,28 @@ General onboarding provides the durable substrate; event onboarding provides tem
 
 ---
 
-## 4) Mystery Match requirement
+## 4) Spark Prompts (first validation mode) — minimal inputs
 
-Mystery Match should rely mostly on general onboarding and require only light event onboarding.
+**Spark Prompts** is designed to run on **minimal, conversation-safe** data — aligned with **social handle first** and **lightweight tonight context**:
 
-Event-level Mystery Match setup should stay short, for example:
-- Participate tonight? (yes/no)
-- Open to being discoverable for others? (yes/no)
-- Tonight connection lens (romantic spark / strong conversation / open-minded)
-- Tonight energy (gentle / playful / bold / deep)
-- Who they would enjoy meeting tonight
-- Allowed clue types (interests, vibe, fun facts) and disallowed clue classes (e.g. physical identifiers)
-- Exit/discoverability controls for tonight (pause participation, skip assignment, hide from mode)
+- **Social handle** (photo, first name, one expressive line).
+- **Tonight signals** — mood, energy, simple labels (e.g. curious, open-minded) via **event onboarding** or quick in-event picks.
+- Optional progressive fields (tags, hooks) only as they improve prompt quality — **not** gating first participation.
 
-This keeps mode setup fast while still improving assignment quality and hint relevance.
+The **first event-mode layer** can operate without deep profile completion; it powers **prompt-driven interaction**, not browsing. See [spark-prompts.md](./spark-prompts.md).
+
+---
+
+## 5) Mystery Match V1 dependency
+
+Mystery Match V1 is designed for **mixed-adoption live events**: it does **not** require a finished “dating profile.” It depends on a **thin stack**:
+
+- **Social handle** — photo, first name, one expressive line (V1 entry primitive).
+- **Tonight / event context** — mood, intent, connection lens (event onboarding or equivalent).
+- **Clue-safe signals** — from the **Social / conversation layer** and light persistent fields (vibe, hooks, interaction style), not a long questionnaire.
+- **Participation + discoverability state** — opted into Mystery Match, discoverable when allowed, exit/pause controls ([mystery-match.md](./mystery-match.md)).
+
+Heavy compatibility depth is **progressive** and **not** a gate for joining the mode. Event-level setup stays **short**; general onboarding deepens the pool for **stronger conversation-safe clues** over time without blocking first participation.
 
 ---
 
@@ -93,4 +110,5 @@ This keeps mode setup fast while still improving assignment quality and hint rel
 - [Core product concept](../PRODUCT-CONCEPT.md)
 - [Product blueprint](../BLUEPRINT.md)
 - [Progressive profile visibility](./progressive-profile.md)
+- [Spark Prompts](./spark-prompts.md)
 - [Mystery Match mode](./mystery-match.md)

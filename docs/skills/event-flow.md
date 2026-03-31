@@ -11,7 +11,7 @@ Meetra supports a first MVP event system focused on **one active event per user*
 - Hosts control flow with **active mode** (rotations, icebreakers, quiz, challenges), **end event**, and **remove guest** (soft-remove; history kept).
 - Hosts see **live metrics**, **guest list**, **check-in QR** for printing/venue, and **past event roster** (ended events, includes removed guests).
 
-> Note: current mode labels are legacy MVP placeholders. Product direction now defines **Mystery Match** as the first concrete V1 mode, with additional modes to follow.
+> Note: current `activeMode` values are legacy MVP placeholders. Product direction: **Spark Prompts** as **first validation** mode; **Mystery Match** as **flagship differentiated** V1-defined mode; **QR**-heavy infrastructure sequenced after interaction-layer validation ([PRODUCT-CONCEPT.md](../PRODUCT-CONCEPT.md), [BLUEPRINT.md](../BLUEPRINT.md)).
 
 ## Data model
 
@@ -64,7 +64,7 @@ URL builders: `src/lib/linking/meetra-urls.ts` (`buildInviteJoinUrl`, `buildChec
 
 ## Next-state direction (not fully implemented yet)
 
-- **First concrete V1 mode:** `mystery_match` (guided discovery with progressive hints, soft proximity cues, and delayed reveal).
+- **First concrete V1 mode:** `mystery_match` — **guided narrowing** within the **active Meetra participant layer** (not a room-wide hunt); **action-driven** loop (talk → scan → check → repeat); **conversation-safe** clues; optional soft proximity; delayed reveal ([mystery-match.md](./mystery-match.md)).
 - **Onboarding model:** persistent **general onboarding** + optional **event onboarding** triggered by host config/selected modes.
 - **Participation controls:** Mystery Match includes explicit before/after-reveal opt-out (`stop/skip/leave round/pause discoverability`) as a core safety and dignity requirement.
 - **Matching contract unchanged:** Mystery Match can elevate a soft-match candidate into post-event recap/like flow, but confirmed match still requires mutual like after event end.

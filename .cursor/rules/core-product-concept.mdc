@@ -7,6 +7,6 @@ alwaysApply: true
 
 **Canonical narrative (vision, flows, terminology, monetization):** [docs/PRODUCT-CONCEPT.md](docs/PRODUCT-CONCEPT.md)
 
-**Supporting detail:** [docs/BLUEPRINT.md](docs/BLUEPRINT.md) (QR, modes, Mystery Match depth, build sketch). Progressive profile: [docs/skills/progressive-profile.md](docs/skills/progressive-profile.md).
+**Supporting detail:** [docs/BLUEPRINT.md](docs/BLUEPRINT.md) (mode sequencing, Spark Prompts vs Mystery Match, QR long-term infrastructure, build sketch). Progressive profile: [docs/skills/progressive-profile.md](docs/skills/progressive-profile.md). Spark Prompts: [docs/skills/spark-prompts.md](docs/skills/spark-prompts.md). Mystery Match: [docs/skills/mystery-match.md](docs/skills/mystery-match.md).
 
-**One-line summary:** Meetra is an event-based dating layer — **Meet → Interact → Then Match** — with layered profiles, host-run modes, no in-event chat, matching and chat only after the event; organiser-first monetization.
+**One-line summary:** Meetra is an event-based dating layer — **Meet → Interact → Then Match** — with **social handle first**; **V1 validation** leads with **Spark Prompts** (interaction foundation), **Mystery Match** as flagship differentiated mode, **QR** as long-term infrastructure (not MVP-defining for first validation); no in-event chat, match/chat after event; organiser-first monetization.

@@ -2,7 +2,7 @@
 
 ## Overview
 
-- **Firebase JS SDK** only (Expo Go compatible). Config from `process.env.EXPO_PUBLIC_*` in `src/lib/firebase/config.ts`.
+- **Firebase JS SDK** only (Expo Go compatible). Config from `process.env.EXPO_PUBLIC_*` in `src/lib/firebase/config.ts`. Optional **`EXPO_PUBLIC_OPENAI_API_KEY`**: enables LLM-backed vibe intro generation in `src/lib/profile/vibe-synthesis.ts`; without it, copy is synthesized locally from user-provided fields only.
 - **Firestore**: profiles in `profiles/{uid}`; one doc per user. See `src/lib/firestore/profiles.ts` for types and CRUD.
 - **Firestore events (MVP)**: `events/{eventId}`, single active membership in `eventMemberships/{uid}`, and per-event roster/history in `events/{eventId}/members/{memberUid}`. See `src/lib/firestore/events.ts`.
 - **Storage**: profile photos at `profiles/{uid}/photos/{photoId}`. See `src/lib/storage/profile-photos.ts`.
@@ -11,7 +11,7 @@
 
 - **Collection**: `profiles`
 - **Document ID**: Firebase Auth UID.
-- **Fields**: displayName, bio, dateOfBirth, gender, lookingFor, photos (`{ id: string; url: string }[]` ordered), vibeTags (string[], max 3), eventIntention (string), prompts (`{ promptId: string; answer: string }[]`), talkAbout (string), interests (string[]), createdAt, updatedAt.
+- **Fields**: displayName, bio, dateOfBirth, gender, lookingFor, photos (`{ id: string; url: string }[]` ordered), vibeTags (string[], max 3), eventIntention (string), prompts (`{ promptId: string; answer: string }[]`), talkAbout (string), conversationHooks (object), socialEnergy, interactionStyle (string[]), lifestyleSignals (string[]), aiVibeSummary, aiStandoutHook, aiSuggestedAskMe, participationDefaults (object), **generalOnboardingCompletedAt** (ISO string — set when the user finishes general onboarding), interests (string[]), createdAt, updatedAt.
 - **Rules** (`firestore.rules`): Authenticated read any profile; create/update/delete only own doc (`request.auth.uid == userId`).
 
 - **Collection**: `events`
@@ -26,7 +26,7 @@
 
 - **Subcollection**: `events/{eventId}/members`
 - **Document ID**: member Firebase Auth UID.
-- **Fields**: role, memberStatus (`joined` \| `checked_in` \| `removed`), joinedAt, checkedInAt, removedAt, removedByHostId.
+- **Fields**: role, memberStatus (`joined` \| `checked_in` \| `removed`), joinedAt, checkedInAt, removedAt, removedByHostId; optional **`eventOnboarding`** map for tonight/mode-specific data (see `src/lib/firestore/event-onboarding.ts`).
 - **Rules**: Member can read/write own roster doc; host can read all roster docs for their event; host can update for admin (e.g. soft-remove). Deletes disallowed (history).
 
 ## Storage

@@ -2,15 +2,39 @@
 
 Text sketch of how the app should work end-to-end. Implementation status is noted where relevant; most of this is future. See [APP.md](APP.md) for current state and [PRODUCT-CONCEPT.md](PRODUCT-CONCEPT.md) for the core narrative.
 
+**Experience stance:** Meetra should **not** look, read, or behave like a generic swipe/chat dating app — avoid recycled layouts, stock “dating UI” tropes, and engagement patterns that train users to pre-judge or churn. Favor **event-native**, **interaction-first** surfaces that feel distinct and trustworthy in a room, not like a reskinned consumer dating product.
+
+---
+
+## V1 mode strategy (interaction foundation first)
+
+Meetra separates three things:
+
+1. **First validation mode** — prove the **interaction layer** with **minimal friction**: **Spark Prompts** (working name), a **prompt-driven** live mode. The first product question is whether Meetra can **improve in-room conversations** and **reduce awkwardness** — not whether a particular checkpoint mechanic is elegant.
+
+2. **Flagship differentiated mode** — **Mystery Match** remains central to long-term identity: **guided narrowing**, **active participant layer**, **mixed-adoption realism**, **conversation-first** — but it is **not necessarily the best first mode for earliest live validation**; it layers **on top of** a validated interaction foundation.
+
+3. **Later interaction infrastructure** — **QR-forward** stats, rewards, leaderboards, organiser tooling, and richer game loops stay in the **long-term vision** (see §1 QR below). **QR remains strategically important** but is **demoted from “core MVP-defining mechanic”** to **infrastructure introduced after** the core interaction thesis is validated — so QR friction does not muddy whether users want **app-supported live interaction**.
+
+> **Spark Prompts validates the interaction foundation. Mystery Match builds differentiated game-like value on top of that foundation.**
+
+> **QR remains part of Meetra’s long-term infrastructure vision, but it is not required to validate the core interaction thesis in V1.**
+
+**Mixed-adoption realism** motivates this sequencing: a **prompt-driven** mode is **robust** when only a subset of guests use the app; denser checkpoint systems can follow once the foundation is proven.
+
+**Spark Prompts in one strategic line:** a **serious first validation mode** — contextual **live prompts** that improve **approach and conversation**, powered by **social handle + tonight context**, **without** requiring QR or game-depth infrastructure to prove Meetra’s **core interaction thesis**; **Mystery Match** **adds** flagship differentiation **after**, **not instead of**, that proof.
+
+Canonical specs: [skills/spark-prompts.md](skills/spark-prompts.md), [skills/mystery-match.md](skills/mystery-match.md).
+
 ---
 
 ## Organisers, modes, and initial scope
 
 - **Target group:** **Singles/dating-event organisers** and **regular event organisers** who want to augment an existing event with a **dating layer** (not just dedicated singles nights). No single “customer archetype”; the platform should work across contexts and crowd types.
-- **Modes:** Meetra exposes **different modes** (templates or configurable presets) so each event type gets an appropriate flow: rotations vs lounge-style mingling, competitive vs chill, small group vs large venue, etc. Host picks (or customises) a mode rather than one generic script.
-- **Initial launch focus:** Build and ship against **three example event types** as the first concrete modes. The **first defined V1 mode is Mystery Match**; remaining mode/event examples are still being selected. Once validated, expand the mode catalogue.
+- **Modes:** Meetra exposes **different modes** (templates or configurable presets) so each event type gets an appropriate flow: prompt-driven interaction, rotations, lounge-style mingling, structured games, etc. Host picks (or customises) a mode rather than one generic script.
+- **Initial launch focus:** Build and ship against **three example event types** as reference implementations. **First validation mode:** **Spark Prompts**. **Flagship differentiated mode (V1 definition):** **Mystery Match**. Remaining mode/event examples are still being selected. Once validated, expand the mode catalogue.
 
-**V1 example events:** First concrete mode is **Mystery Match** (works especially well for open-floor social mingling). Additional event-type references should still be chosen across both (a) dedicated singles/dating-event formats and (b) regular event types augmented with a **dating layer** (e.g. intimate house party vs bar singles night vs corporate/community format).
+**V1 example events:** Lead with **Spark Prompts** as the **foundation** mode; **Mystery Match** as the **differentiated** second-layer mode (**guided narrowing**, **active Meetra layer**). Additional event-type references should still be chosen across both (a) dedicated singles/dating-event formats and (b) regular event types augmented with a **dating layer** (e.g. intimate house party vs bar singles night vs corporate/community format).
 
 ---
 
@@ -21,11 +45,26 @@ Meetra onboarding has two levels:
 - **General onboarding (persistent):** Reusable profile and compatibility/conversation foundations that remain useful across events.
 - **Event onboarding (optional):** Short, contextual setup used only when needed by host config and/or selected mode.
 
+### Minimum persistent identity (V1 social handle)
+
+Product mantra: **Social handle first. Profile later. Interaction always.**
+
+The **minimum** persistent identity for V1 is a **social handle**:
+
+- **One photo**
+- **First name**
+- **One expressive line** (conversation-starting hook — not a full bio)
+
+That bar is sufficient to **join an event**, be **discoverable** (where enabled), and **participate in live interaction modes**. Additional fields (age, tags, intention, interests, deeper prefs, gallery, bio, compatibility) are **progressive** and must **not** be required before someone can participate for the first time.
+
+General onboarding may still **invite** richer data over time; it must not **gate** the above minimum.
+
 ### General onboarding (persistent foundation)
 
 General onboarding should stay lightweight but expressive and should power pre-event, during-event, and post-event phases without forcing users to re-enter stable information each time.
 
-- Core identity basics (display name, age/date of birth, photos)
+- **Required floor:** social handle (one photo, first name, one expressive line)
+- Core identity basics beyond the floor (e.g. age/date of birth, additional photos) — progressive
 - Broad dating/connection preferences (gender/looking for, broad intent, age preferences where relevant)
 - Interests + lifestyle signals
 - Vibe/personality/social energy signals
@@ -59,9 +98,13 @@ Some dating products are optimized for engagement/retention (a rotten dating-app
 
 We position Meetra as the “angels coming to save the dating world” — not with hype, but with a system where incentives support real connection.
 
-## 1. QR codes as core
+## 1. QR codes (long-term interaction infrastructure)
 
-QR codes are **core and vital** for maximizing interactions. They are used for games, for connecting people, and for keeping track of statistics.
+QR codes remain **central to Meetra’s long-term vision**: maximizing traceable interaction, organiser insight, and gamification — games, connecting people, statistics, rewards, leaderboards. **They are not abandoned.**
+
+For **MVP validation**, however, QR is **not** treated as the **defining mechanic** of the first mode. The early product must first prove it can **improve live conversation** with **low-friction, interaction-first** surfaces; **checkpoint-heavy** flows can **follow** once that thesis holds. **Spark Prompts** deliberately does **not** depend on QR to validate the core question.
+
+When QR is in play (including in **Mystery Match** where scans can act as checkpoints), it functions as **later interaction infrastructure** layered onto an **interaction foundation**, not as a prerequisite for proving Meetra’s basic value.
 
 ### Roles of QR
 
@@ -80,7 +123,7 @@ QR codes are **core and vital** for maximizing interactions. They are used for g
 - **Per QR scan:** e.g. more post-event “human likes” (or equivalent currency) — so scanning more QRs during the event gives more capacity or visibility when liking people after the event.
 - **Prestige on profile:** Badges, titles, or visible stats (e.g. “Event champion”, “Top connector”) that live on the profile and signal engagement. Strong gamification vibe.
 
-Summary: QR = checkpoint + proof of interaction + input to stats + driver of rewards and leaderboards.
+Summary: QR = checkpoint + proof of interaction + input to stats + driver of rewards and leaderboards — **long-term product muscle**, sequenced **after** interaction-layer validation in V1 strategy.
 
 ---
 
@@ -98,29 +141,68 @@ Beyond “anyone at the event,” we want a **soft matchmaking** layer:
 
 Rule: Soft matchmaking **supplements** the event-based flow; it does not replace “meet in person first, then match after.” Treat suggestions as supportive/probabilistic guidance, not deterministic guarantees.
 
-### First concrete mode: Mystery Match (V1)
+### Spark Prompts (V1 first validation mode)
 
-Mystery Match is a **playful discovery game** where each participating attendee gets one hidden **AI-selected promising connection** for that event round.
+**Working name** — see [skills/spark-prompts.md](skills/spark-prompts.md).
 
-- Not framed as soulmate/perfect-match certainty.
-- Framed as likely fit, strong conversation fit, or someone they may enjoy meeting.
-- Designed to reduce approach anxiety and create movement/circulation.
-- Supports low-pressure ambiguity and temporary anonymity patterns.
+**Definition:** Spark Prompts is Meetra’s **deliberate prompt-driven live interaction mode** — the app issues **contextual, socially useful prompts** so attendees can **start or deepen in-person conversations**. It is **interaction infrastructure for the room**, not a toy feature: it exists to answer whether Meetra **materially improves real conversation** before layering **checkpoint games**, **QR stats**, or **Mystery Match** complexity.
 
-It is not a classic blind date mechanic and not deterministic matchmaking. It is guided in-room discovery using hints, soft proximity, and delayed reveal.
+**Inputs:** **Social handle** plus **lightweight tonight context** (vibe, intent, hooks, simple labels) from the **Social layer** and **event onboarding** — enough to personalize prompts **without** full profile depth.
+
+**Why first / why robust in mixed adoption:** Heavier modes assume more **shared behavior** (scans, assignments, game state). When only part of the crowd uses the app, **prompt-driven** interaction stays **legible and shippable**; Spark **validates the thesis** without asking users to master **infrastructure-first** mechanics.
+
+**Relationship to Mystery Match:** Spark **does not replace** Mystery Match. Spark **proves** the **interaction foundation**; Mystery **delivers** flagship **differentiated** game value **on top** of that foundation.
+
+**Core loop (product-level):** **receive prompt → talk → continue or mark progress → next prompt or nudge** (implementation open; **no** required QR for validation).
+
+### Mystery Match (V1 flagship differentiated mode)
+
+> **Mystery Match V1 is not a room-wide scavenger hunt.** It is a **guided narrowing game** across the **active Meetra participant layer**.
+
+**Mystery Match** remains a **flagship differentiated mode** — high narrative and emotional value, **not** demoted in importance — but **product strategy** positions it **after** **Spark Prompts** validates that Meetra can improve live interaction. It is **more demanding** to build and to interpret in early tests; it **builds on** the validated **interaction layer**.
+
+Mystery Match is a **guided in-room discovery loop**: each **opted-in** attendee gets one hidden **AI-selected promising connection** for the round — **likely fit**, **strong conversation fit**, someone they may enjoy meeting (not soulmate/perfect-match language, not deterministic matchmaking). It is **not** a classic blind date mechanic and **not** surveillance-style person-finding.
+
+**Mixed-adoption realism:** The mode is viable when only a **subset** of guests use Meetra because play is **scoped to the active participant layer**, not the entire physical crowd.
+
+#### Eligible pool
+
+- Only users who are **active in Meetra** for the event **and** **participating in Mystery Match** are in the **eligible pool** (assignable and discoverable per product rules).
+- The mystery person is **within that layer**, not “anywhere in the venue.” Meetra facilitates **among active users**; it does not assume universal adoption.
+
+#### Legibility of participation (subtle)
+
+Users should feel the mode is happening inside a **recognizable active layer**. Lightweight signals may suggest **playing tonight**, **in Mystery Match**, **discoverable now** — **subtle**; do not turn the event into a badge festival.
+
+#### V1 clue philosophy (stronger, conversation-safe)
+
+V1 uses **slightly stronger** narrowing context than the softest hint-only framing, while avoiding creepy identification.
+
+- **Favor:** social/interaction clues, **tonight’s vibe**, **conversation hooks**, **interaction style**, **event intent** (drawn mainly from the **during-event Social layer** + tonight context).
+- **Avoid:** exact physical identifiers, demographic “find the person” games, surveillance-style spotting.
+
+#### Narrowing through interaction (primary loop)
+
+Progress is **action-driven**, not mainly passive time-based unlocks:
+
+- **Talk → interact → narrow → check → repeat** (with **scan** as a **checkpoint** where product policy uses QR as **interaction infrastructure**).
+- **Scan** (when used) registers contact and feeds elimination/progression feedback — **later infrastructure**, not required for validating the **Spark Prompts** thesis.
+- Clues strengthen through **engagement**; the experience should not feel like **wandering blindly** waiting for timer drops.
+
+**Failed** interactions (e.g. scan after a conversation that is **not** your promising connection) should still feel like **narrowing** and **progress**, not a wasted move.
+
+Optional **soft proximity** can **support** narrowing; it does not replace talk + scan. See “proximity + haptics” below.
 
 ### Mystery Match attendee loop (target behavior)
 
-1. User joins event and completes required onboarding.
-2. If opted into Mystery Match, they receive one hidden assignment for that round.
-3. App provides an initial clue.
-4. User mingles broadly; additional hints unlock over time/milestones.
-5. App can provide soft proximity cues when nearby.
-6. User tries to identify and meet the mystery person in real life.
-7. Reveal occurs only after an intentional trigger (not immediate).
-8. After reveal/confirmation, app can unlock stronger prompts and prioritize this connection in post-event flow.
+1. User joins event, meets **social handle** + mode entry requirements, opts into Mystery Match.
+2. Receives one hidden **promising connection** from the **eligible pool** only.
+3. Gets an initial **conversation-safe** clue; narrows through **conversation + scans + feedback** (not room-wide blind search).
+4. Receives **stronger clues** as they engage; optional soft proximity as supporting signal.
+5. Reveal/confirmation via intentional trigger (not immediate at assignment).
+6. After reveal/confirmation, may unlock stronger prompts and post-event prominence — still **not** a confirmed **match** until mutual like after the event.
 
-Design principle: this mode should increase **broad mingling**, not produce tunnel vision around one target.
+Design principles: **broad mingling** still; **eligible pool** is **Meetra participants**, not the whole room; **no tunnel vision** on one target to the exclusion of healthy circulation.
 
 ### Mystery Match exit hatch (required)
 
@@ -156,26 +238,13 @@ State handling:
 - Exiting after reveal prevents mode-level implication of continued mutual intent.
 - Exit hatch does not replace broader safety/reporting tools; reporting remains separately available.
 
-### Mystery Match hints (conversation-first)
+### Mystery Match hints (detail)
 
-Hints should be progressive and pulled mainly from the **during-event Social layer**, not the full post-event profile.
-
-Good hint directions:
-- Interests, vibe clues, playful traits, social energy cues
-- Conversation hooks and “ask them about…” clues
-- Light situational/personality cues
-
-Avoid:
-- Exact physical identifiers
-- Early full identity reveal
-- Sensitive or overly specific personal facts
-- Demographic-marker “spot the person” mechanics
-
-Hints exist to facilitate real conversations, not surveillance-style identification.
+Clue philosophy is summarized above (**V1 clue philosophy**). Hints stay **progressive**, pulled mainly from the **during-event Social layer** (not the full post-event profile), and exist to **facilitate conversation and guided narrowing**, not surveillance-style identification. Canonical behavior: [skills/mystery-match.md](skills/mystery-match.md).
 
 ### Mystery Match proximity + haptics (privacy-preserving)
 
-Desired feel: warm tension/discovery, not radar precision.
+**Role:** Supporting signal for **guided narrowing** — secondary to **talk + scan + feedback**. Desired feel: warm tension/discovery, not radar precision.
 
 - Subtle haptics can increase with broad closeness tiers (`no signal` → `warmer` → `close` → `very close`)
 - No exact radar map, no directional arrow, no exact attendee location reveal
@@ -240,14 +309,14 @@ Related requirement: active modes (including Mystery Match) must include a priva
 ## 5. Product flow (recap with QR and matchmaking)
 
 - **Pre-event:** Lite profile, join event (invite/link), **general onboarding** foundation + optional **event onboarding** for tonight/mode needs; optional soft matchmaking (event suggestions / niches).
-- **During event:** No in-app chat/messages. Host runs games; QR used for checkpoints, games, and connecting. **Mystery Match (first V1 mode)** adds one hidden promising connection with progressive hints, soft proximity cues, delayed reveal, and an explicit exit hatch (before/after reveal). **Social profile layer** (conversation fuel) unlocks after interaction milestones where designed. Stats and leaderboards in real time or at end of event. Collecting QRs rewards digitally (more post-event likes, prestige). Temporary anonymity where it reduces embarrassment (e.g. in certain games or actions).
+- **During event:** No in-app chat/messages. Host runs modes. **Spark Prompts** — **prompt-driven** interaction foundation (low-friction validation). **Mystery Match** — **guided narrowing**, **active participant layer**, **conversation-safe** clues, **action-driven** progress, optional soft proximity, delayed reveal, failed interactions as **progress**, explicit exit hatch; **scan** as checkpoint where QR infrastructure applies. **QR / stats / rewards** scale in as **later interaction infrastructure** after the foundation is proven — not required for first validation. **Social profile layer** feeds prompts and modes. Temporary anonymity where it reduces embarrassment.
 - **Post-event:** **Full profile** to people you interacted with; view attendees (gamified), leaderboards, like flow; more likes allowed or boosted based on QR performance. Soft matches (potentials) vs **match** (mutual like → chat unlocked). Chat remains locked until a mutual match; matching/chat are enabled only after the event. Prestige visible on profile. Anonymity can apply at “right time” (e.g. who liked you revealed only when appropriate).
 
 ---
 
 ## 6. What to build (when)
 
-- **QR:** Scan flow, QR generation (e.g. per user or per station), link scan → “connection” or game progress, persistence for stats.
+- **QR (infrastructure wave):** Scan flow, QR generation (e.g. per user or per station), link scan → “connection” or game progress, persistence for stats — sequenced after **interaction-layer** validation; long-term vision unchanged.
 - **Stats & leaderboards:** Event-scoped (and optionally global) stats, leaderboard definitions (“top candidate”, “most scans”, etc.), APIs and UI to read/display them.
 - **Rewards:** Rules for “more likes per QR” and any caps; profile prestige (badges/titles) and where they appear.
 - **Soft matchmaking:** Preferences (profile + event), event tagging/filtering, discovery or suggestions; optional sub-cohorts per event; keep outputs suggestive/probabilistic.
@@ -255,6 +324,6 @@ Related requirement: active modes (including Mystery Match) must include a priva
 - **Progressive profile:** Data model and APIs for Lite / Social / Full visibility rules; unlock triggers (QR, game cohort, etc.); six-block content model; event recap on Full layer.
 - **Onboarding system:** Persistent general onboarding + optional event onboarding triggers tied to host config/modes.
 - **Participation controls:** Mode-level consent + discoverability controls, including Mystery Match exit hatch state handling before/after reveal.
-- **Event modes:** Mode definitions (host UI + attendee experience); **Mystery Match** is first concrete V1 mode, with additional V1 examples to finalise.
+- **Event modes:** Mode definitions (host UI + attendee experience); **Spark Prompts** as **first validation** mode; **Mystery Match** as **flagship differentiated** V1-defined mode; additional V1 examples to finalise.
 
 This doc is the blueprint; update it as ideas solidify or priorities change.

@@ -18,10 +18,11 @@ import { Label } from '@/components/ui/label';
 import { Text } from '@/components/ui/text';
 import { useAuth } from '@/contexts/auth-context';
 import {
-    useProfile,
-    useSetProfileMutation,
-    useUploadProfilePhotoMutation,
-} from '@/hooks/use-profile-query';
+  CLUE_CLASS_OPTIONS,
+  LIFESTYLE_SIGNAL_OPTIONS,
+  ONBOARDING_INTEREST_OPTIONS,
+  SOCIAL_ENERGY_OPTIONS,
+} from '@/constants/onboarding';
 import {
   EVENT_INTENTION_OPTIONS,
   MAX_PROFILE_PROMPTS,
@@ -32,22 +33,16 @@ import {
   type ProfilePromptCategory,
   promptTextById,
 } from '@/constants/profile-prompts';
-import { DEFAULT_PROFILE, type DatingProfile } from '@/lib/firestore/profiles';
+import {
+  useProfile,
+  useGenerateVibeMutation,
+  useSetProfileMutation,
+  useUploadProfilePhotoMutation,
+} from '@/hooks/use-profile-query';
+import { DEFAULT_PROFILE, normalizeProfilePayload, type DatingProfile } from '@/lib/firestore/profiles';
 
 const GENDER_OPTIONS = ['', 'Male', 'Female', 'Non-binary', 'Other'];
 const LOOKING_FOR_OPTIONS = ['', 'Dating', 'Friends', 'Something casual', 'Long-term'];
-const INTEREST_OPTIONS = [
-  'Music',
-  'Travel',
-  'Food',
-  'Sports',
-  'Movies',
-  'Reading',
-  'Art',
-  'Gaming',
-  'Fitness',
-  'Photography',
-];
 
 export default function ProfileEditScreen() {
   const { user } = useAuth();
@@ -58,6 +53,7 @@ export default function ProfileEditScreen() {
   const { data: profile, isLoading } = useProfile(user?.uid);
   const setProfileMutation = useSetProfileMutation(user?.uid);
   const uploadPhotoMutation = useUploadProfilePhotoMutation(user?.uid);
+  const generateVibeMutation = useGenerateVibeMutation(user?.uid);
 
   useEffect(() => {
     if (profile) {
@@ -73,6 +69,19 @@ export default function ProfileEditScreen() {
         eventIntention: profile.eventIntention,
         prompts: profile.prompts,
         talkAbout: profile.talkAbout,
+        conversationHooks: { ...profile.conversationHooks },
+        socialEnergy: profile.socialEnergy,
+        interactionStyle: [...profile.interactionStyle],
+        lifestyleSignals: [...profile.lifestyleSignals],
+        aiVibeSummary: profile.aiVibeSummary,
+        aiStandoutHook: profile.aiStandoutHook,
+        aiSuggestedAskMe: profile.aiSuggestedAskMe,
+        participationDefaults: {
+          ...profile.participationDefaults,
+          allowedClueTypes: [...profile.participationDefaults.allowedClueTypes],
+          excludedClueTypes: [...profile.participationDefaults.excludedClueTypes],
+        },
+        generalOnboardingCompletedAt: profile.generalOnboardingCompletedAt,
       });
     }
   }, [profile]);
@@ -117,7 +126,9 @@ export default function ProfileEditScreen() {
       const nextPhotos = [...previousPhotos, { id: photoId, url }];
       setForm((prev) => ({ ...prev, photos: nextPhotos }));
       try {
-        await setProfileMutation.mutateAsync({ photos: nextPhotos });
+        await setProfileMutation.mutateAsync(
+          normalizeProfilePayload({ ...form, photos: nextPhotos })
+        );
       } catch (persistErr) {
         setForm((prev) => ({ ...prev, photos: previousPhotos }));
         setError(persistErr instanceof Error ? persistErr.message : 'Photo uploaded but could not save profile.');
@@ -216,11 +227,60 @@ export default function ProfileEditScreen() {
     if (!user?.uid) return;
     setError(null);
     try {
-      await setProfileMutation.mutateAsync(form);
+      await setProfileMutation.mutateAsync(normalizeProfilePayload(form));
       router.back();
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Failed to save profile.');
     }
+  }
+
+  async function handleGenerateVibe() {
+    if (!profile) return;
+    setError(null);
+    try {
+      const merged: DatingProfile = {
+        ...form,
+        createdAt: profile.createdAt,
+        updatedAt: profile.updatedAt,
+      };
+      const out = await generateVibeMutation.mutateAsync(merged);
+      setForm((prev) => ({
+        ...prev,
+        aiVibeSummary: out.aiVibeSummary,
+        aiStandoutHook: out.aiStandoutHook,
+        aiSuggestedAskMe: out.aiSuggestedAskMe,
+      }));
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Could not generate intro lines.');
+    }
+  }
+
+  function toggleLifestyle(sig: string) {
+    setForm((prev) => ({
+      ...prev,
+      lifestyleSignals: prev.lifestyleSignals.includes(sig)
+        ? prev.lifestyleSignals.filter((x) => x !== sig)
+        : [...prev.lifestyleSignals, sig],
+    }));
+  }
+
+  function toggleExcludedClue(id: (typeof CLUE_CLASS_OPTIONS)[number]['id']) {
+    setForm((prev) => {
+      const ex = [...prev.participationDefaults.excludedClueTypes];
+      const idx = ex.indexOf(id);
+      if (idx >= 0) ex.splice(idx, 1);
+      else ex.push(id);
+      const allIds = CLUE_CLASS_OPTIONS.map((c) => c.id);
+      const allowed = allIds.filter((c) => !ex.includes(c));
+      return {
+        ...prev,
+        participationDefaults: {
+          ...prev.participationDefaults,
+          excludedClueTypes: ex,
+          allowedClueTypes: allowed.length ? allowed : allIds,
+        },
+      };
+    });
   }
 
   if (!user) {
@@ -374,7 +434,7 @@ export default function ProfileEditScreen() {
             </CardHeader>
             <CardContent>
               <View className="flex-row flex-wrap gap-2">
-                {INTEREST_OPTIONS.map((opt) => (
+                {ONBOARDING_INTEREST_OPTIONS.map((opt) => (
                   <Button
                     key={opt}
                     variant={form.interests.includes(opt) ? 'default' : 'outline'}
@@ -424,6 +484,62 @@ export default function ProfileEditScreen() {
                   </Button>
                 ))}
               </View>
+            </CardContent>
+          </Card>
+
+          <Card className="mt-6">
+            <CardHeader>
+              <CardTitle>Social energy</CardTitle>
+              <CardDescription>How you usually show up (helps at events).</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <View className="flex-row flex-wrap gap-2">
+                {SOCIAL_ENERGY_OPTIONS.map((opt) => (
+                  <Button
+                    key={opt.id}
+                    size="sm"
+                    variant={form.socialEnergy === opt.id ? 'default' : 'outline'}
+                    onPress={() => setForm((p) => ({ ...p, socialEnergy: opt.id }))}>
+                    <Text className="text-xs">{opt.label}</Text>
+                  </Button>
+                ))}
+              </View>
+            </CardContent>
+          </Card>
+
+          <Card className="mt-6">
+            <CardHeader>
+              <CardTitle>Conversation hooks</CardTitle>
+              <CardDescription>Short lines that help others start a chat — no essay needed.</CardDescription>
+            </CardHeader>
+            <CardContent className="gap-3">
+              {(
+                [
+                  ['askMeAbout', 'Ask me about…'],
+                  ['talkForeverAbout', 'I can talk forever about…'],
+                  ['friendsWouldSay', 'Friends would say I…'],
+                  ['excitedWhen', 'I get excited when someone brings up…'],
+                ] as const
+              ).map(([key, label]) => (
+                <View key={key} className="gap-1">
+                  <Label>{label}</Label>
+                  <Input
+                    placeholder="One short line"
+                    value={form.conversationHooks[key]}
+                    onChangeText={(t) =>
+                      setForm((p) => {
+                        const nextHooks = { ...p.conversationHooks, [key]: t.slice(0, 160) };
+                        const next =
+                          key === 'askMeAbout'
+                            ? { ...p, conversationHooks: nextHooks, talkAbout: p.talkAbout || t }
+                            : { ...p, conversationHooks: nextHooks };
+                        return next;
+                      })
+                    }
+                    multiline
+                  />
+                </View>
+              ))}
             </CardContent>
           </Card>
 
@@ -523,17 +639,128 @@ export default function ProfileEditScreen() {
 
           <Card className="mt-6">
             <CardHeader>
-              <CardTitle>Talk to me about</CardTitle>
-              <CardDescription>Use this as your easy conversation starter.</CardDescription>
+              <CardTitle>Lifestyle & rhythm</CardTitle>
+              <CardDescription>Optional texture for clues and icebreakers.</CardDescription>
             </CardHeader>
-            <CardContent className="gap-2">
-              <Input
-                placeholder="Ask me about travel, music, or something we could both geek out on…"
-                value={form.talkAbout}
-                onChangeText={(t) => setForm((p) => ({ ...p, talkAbout: t }))}
-                multiline
-                numberOfLines={3}
-              />
+            <CardContent>
+              <View className="flex-row flex-wrap gap-2">
+                {LIFESTYLE_SIGNAL_OPTIONS.map((opt) => (
+                  <Button
+                    key={opt}
+                    size="sm"
+                    variant={form.lifestyleSignals.includes(opt) ? 'default' : 'outline'}
+                    onPress={() => toggleLifestyle(opt)}>
+                    <Text className="text-xs">{opt}</Text>
+                  </Button>
+                ))}
+              </View>
+            </CardContent>
+          </Card>
+
+          <Card className="mt-6">
+            <CardHeader>
+              <CardTitle>Participation defaults</CardTitle>
+              <CardDescription>
+                Event nights can override temporarily — see event member onboarding when you join an event.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="gap-4">
+              <View className="flex-row items-center justify-between gap-4">
+                <Text className="flex-1 text-sm">Open to playful modes</Text>
+                <Button
+                  size="sm"
+                  variant={form.participationDefaults.openToPlayfulModes ? 'default' : 'outline'}
+                  onPress={() =>
+                    setForm((p) => ({
+                      ...p,
+                      participationDefaults: {
+                        ...p.participationDefaults,
+                        openToPlayfulModes: !p.participationDefaults.openToPlayfulModes,
+                      },
+                    }))
+                  }>
+                  <Text>{form.participationDefaults.openToPlayfulModes ? 'Yes' : 'No'}</Text>
+                </Button>
+              </View>
+              <View className="flex-row items-center justify-between gap-4">
+                <Text className="flex-1 text-sm">Okay being discoverable at events</Text>
+                <Button
+                  size="sm"
+                  variant={form.participationDefaults.openToDiscoverable ? 'default' : 'outline'}
+                  onPress={() =>
+                    setForm((p) => ({
+                      ...p,
+                      participationDefaults: {
+                        ...p.participationDefaults,
+                        openToDiscoverable: !p.participationDefaults.openToDiscoverable,
+                      },
+                    }))
+                  }>
+                  <Text>{form.participationDefaults.openToDiscoverable ? 'Yes' : 'No'}</Text>
+                </Button>
+              </View>
+              <View className="gap-2">
+                <Label>Skip these clue categories</Label>
+                <Text className="text-xs text-muted-foreground">
+                  Tunes playful hints — never includes sensitive or physical-ID clues.
+                </Text>
+                <View className="flex-row flex-wrap gap-2">
+                  {CLUE_CLASS_OPTIONS.map((c) => {
+                    const excluded = form.participationDefaults.excludedClueTypes.includes(c.id);
+                    return (
+                      <Button
+                        key={c.id}
+                        size="sm"
+                        variant={excluded ? 'destructive' : 'outline'}
+                        onPress={() => toggleExcludedClue(c.id)}>
+                        <Text className="text-xs">{excluded ? `Skip: ${c.label}` : c.label}</Text>
+                      </Button>
+                    );
+                  })}
+                </View>
+              </View>
+            </CardContent>
+          </Card>
+
+          <Card className="mt-6">
+            <CardHeader>
+              <CardTitle>Intro lines (optional)</CardTitle>
+              <CardDescription>
+                Generate a short vibe summary and standout line from what you already shared — edit anytime.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="gap-3">
+              <Button
+                variant="default"
+                onPress={handleGenerateVibe}
+                disabled={generateVibeMutation.isPending}>
+                <Text>{generateVibeMutation.isPending ? 'Creating…' : 'Generate my intro'}</Text>
+              </Button>
+              <View className="gap-1">
+                <Label>Vibe summary</Label>
+                <Input
+                  value={form.aiVibeSummary}
+                  onChangeText={(t) => setForm((p) => ({ ...p, aiVibeSummary: t.slice(0, 200) }))}
+                  multiline
+                  placeholder="Short, grounded, friendly"
+                />
+              </View>
+              <View className="gap-1">
+                <Label>Standout line</Label>
+                <Input
+                  value={form.aiStandoutHook}
+                  onChangeText={(t) => setForm((p) => ({ ...p, aiStandoutHook: t.slice(0, 200) }))}
+                  multiline
+                />
+              </View>
+              <View className="gap-1">
+                <Label>Suggested &ldquo;Ask me about…&rdquo; (if sparse)</Label>
+                <Input
+                  value={form.aiSuggestedAskMe}
+                  onChangeText={(t) => setForm((p) => ({ ...p, aiSuggestedAskMe: t.slice(0, 160) }))}
+                  multiline
+                />
+              </View>
             </CardContent>
           </Card>
 
